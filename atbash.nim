@@ -2,6 +2,8 @@ import strutils
 
 let a: string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
+stdout.write("> ")
+
 var s: string = readLine(stdin)
 var result: string
 
