@@ -11,4 +11,4 @@ for i in countdown(len(inp)-1, 0):
 
 algorithm.reverse(places)
 
-echo repr(places)
+echo places
