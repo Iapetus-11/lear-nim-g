@@ -1,10 +1,15 @@
 import strutils
 
+
+proc distance(n: int): int =
+  var numstr: string
+
+  for i in countup(1, n-1):
+    numstr &= $i
+
+  return len(numstr)
+
+
 stdout.write("> ")
 var num: int = strutils.parseInt(readLine(stdin))
-var numstr: string
-
-for i in countup(1, num-1):
-  numstr &= $i
-
-echo len(numstr)
+echo distance(num)
