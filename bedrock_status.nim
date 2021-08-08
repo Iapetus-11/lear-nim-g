@@ -33,7 +33,5 @@ proc main() {.discardable.} =
     echo "world          : ", dataSplit[7]
     echo "gamemode       : ", dataSplit[8]
 
-
-
 when isMainModule:
     main()
