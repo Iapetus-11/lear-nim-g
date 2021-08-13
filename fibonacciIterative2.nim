@@ -1,5 +1,6 @@
 import strutils
 import bigints
+import times
 
 proc fibonacci(n: int): BigInt = 
     var
@@ -16,4 +17,7 @@ proc fibonacci(n: int): BigInt =
 when isMainModule:
     stdout.write("Calculate which digit of the Fibonacci sequence? ")
     let n: int = parseInt(readLine(stdin))
-    echo fibonacci(n)
+    let start = getTime()
+    let result = fibonacci(n)
+    let duration = (getTime() - start)
+    echo result, "\n", duration.inNanoseconds(), "ns", " or ", duration.inMilliseconds(), "ms"
