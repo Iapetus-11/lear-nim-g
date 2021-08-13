@@ -7,7 +7,7 @@ proc fibonacci(n: int) =
         j = initBigInt(0)
         count = 0
 
-    for k in 1..n+1:
+    for k in 1..n:
         let temp = i
         i = j
         j += temp
