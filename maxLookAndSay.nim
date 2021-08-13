@@ -1,6 +1,7 @@
 import strutils
 import sequtils
 import times
+import math
 
 proc countCurrent(current: char, n: string): int =
     for c in n:
@@ -27,7 +28,7 @@ when isMainModule:
         start = getTime()
     
     for i in 0..iterations:
-        let duration = (getTime().toUnixFloat - start.toUnixFloat).toInt
-        echo "[", duration, "s] ", current.toSeq.max
+        let duration = round(getTime().toUnixFloat - start.toUnixFloat, 1)
+        echo "[i: ", i, ", ", duration, "s] ", current.toSeq.max
         start = getTime()
         current = lookAndSay(current)
