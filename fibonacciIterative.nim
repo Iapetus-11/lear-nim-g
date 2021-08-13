@@ -1,15 +1,22 @@
+import strutils
 import bigints
 
-proc calculateFibonacci(n: int) = 
+proc fibonacci(n: int) = 
     var
         i = initBigInt(1)
         j = initBigInt(0)
+        count = 0
 
     for k in 1..n+1:
         let temp = i
         i = j
         j += temp
         
-        echo j
+        count += 1
+        
+        echo "[", count, "]: ", j
 
-calculateFibonacci(100000)
+when isMainModule:
+    stdout.write("How many numbers of the Fibonacci sequence to calculate? ")
+    let n: int = strutils.parseInt(readLine(stdin))
+    fibonacci(n)
