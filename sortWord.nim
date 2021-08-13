@@ -1,7 +1,4 @@
 import algorithm
-import sequtils
-
-let alphabet = ('a'..'z').toSeq
 
 proc sortKey(a: char, b: char): int =
     return cmp(a, b)
