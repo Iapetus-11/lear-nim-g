@@ -1,5 +1,6 @@
 import strutils
 import sequtils
+import times
 
 proc countCurrent(current: char, n: string): int =
     for c in n:
@@ -21,8 +22,12 @@ when isMainModule:
     stdout.write("How many iterations? ")
     let iterations = parseInt(readLine(stdin))
 
-    var current = "1"
+    var
+        current = "1"
+        start = getTime()
     
     for i in 0..iterations:
-        echo current.toSeq.max
+        let duration = (getTime().toUnixFloat - start.toUnixFloat).toInt
+        echo "[", duration, "s] ", current.toSeq.max
+        start = getTime()
         current = lookAndSay(current)
