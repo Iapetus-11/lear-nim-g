@@ -9,8 +9,6 @@ let n: int = strutils.parseInt(readLine(stdin))
 
 var fibonacciCache: Table[BigInt, BigInt] = initTable[BigInt, BigInt]()
 
-proc hash(n: BigInt): int = hash($n)
-
 proc calculateFibonacci(x: BigInt): BigInt =
     if fibonacciCache.hasKey(x):
         return fibonacciCache[x]
