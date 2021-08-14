@@ -1,5 +1,6 @@
 import random; randomize()
 import sequtils
+import times
 
 const CHARS = "abcdefhijklmnopqrstuvwxyzABCDEFHIJKLMNOPQRSTUVWXYZ123456789&%$#@!+-=".toSeq
 
@@ -7,4 +8,11 @@ proc generatePassword(n: int): string =
     for i in 0..n:
         result &= random.sample(CHARS)
 
-echo generatePassword(10)
+when isMainModule:
+    let start = getTime()
+
+    for i in 0..999_999:
+        # echo i, ". ", generatePassword(12)
+        discard generatePassword(12)
+
+    echo "1,000,000 passwords generated in ", (getTime() - start).inSeconds, "s"
