@@ -1,5 +1,6 @@
 import strutils
 import bigints
+import times
 import os
 
 # ported from code by u/ggrogg
@@ -14,7 +15,7 @@ proc `*`(x: Matrix22, y: Matrix22): Matrix22 =
 
     return (a, b, c, d)
 
-proc pow(mat: Matrix22, n: BigInt): Matrix22 =
+proc pow(mat: Matrix22, n: int): Matrix22 =
     if n == 0:
         return (1.initBigInt, 0.initBigInt, 0.initBigInt, 1.initBigInt)
 
@@ -22,13 +23,25 @@ proc pow(mat: Matrix22, n: BigInt): Matrix22 =
         return mat
 
     if n mod 2 == 0:
-        return mat * mat
+        return pow(mat * mat, (n/2).toInt)
 
     return mat * pow(mat, n-1)
 
-proc fibonacci(n: BigInt): BigInt =
+proc fibonacci(n: int): BigInt =
     let initial = (0.initBigInt, 1.initBigInt, 1.initBigInt, 1.initBigInt)
     return pow(initial, n).b
 
 when isMainModule:
-    echo fibonacci(paramStr(1).parseInt.initBigInt)
+    var n: int
+
+    try:
+        n = parseInt(paramStr(1))
+    except IndexDefect:
+        stdout.write("What digit of the Fibonacci sequence to calculate? ")
+        n = parseInt(readLine(stdin))
+        
+    let start = getTime()
+    let result = fibonacci(n)
+
+    echo result
+    echo "Finished in ", inSeconds(getTime() - start), " seconds."
