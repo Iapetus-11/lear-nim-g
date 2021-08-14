@@ -1,9 +1,10 @@
+import strformat
 import strutils
 import bigints
 import times
 import os
 
-# ported from code by u/ggrogg
+# ported from code by u/ggrogg (credit to them)
 
 type Matrix22 = tuple[a: BigInt, b: BigInt, c: BigInt, d: BigInt]
 
@@ -42,7 +43,7 @@ when isMainModule:
         
     let startTime = getTime()
     let result = fibonacci(n)
-    let endTime = getTime()
+    let duration = inMilliSeconds(getTime() - startTime).toBiggestFloat / 1000
 
     echo result
-    echo "Finished in ", inSeconds(endTime - startTime), " seconds."
+    echo &"Finished in {duration:.2f} seconds."
