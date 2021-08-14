@@ -1,5 +1,7 @@
 import strutils
 import bigints
+import tables
+import hashes
 import times
 import os
 
@@ -7,7 +9,12 @@ import os
 
 type Matrix22 = tuple[a: BigInt, b: BigInt, c: BigInt, d: BigInt]
 
+var cache: Table[tuple[a: Matrix22, b: Matrix22], Matrix22]
+
 proc `*`(x: Matrix22, y: Matrix22): Matrix22 =
+    if cache.hasKey((x, y)):
+        return cache[(x, y)]
+
     let a = x.a * x.b + x.b * y.c
     let b = x.a * y.b + x.b * y.d
     let c = x.c * y.a + x.d * y.c
@@ -40,8 +47,9 @@ when isMainModule:
         stdout.write("What digit of the Fibonacci sequence to calculate? ")
         n = parseInt(readLine(stdin))
         
-    let start = getTime()
+    let startTime = getTime()
     let result = fibonacci(n)
+    let endTime = getTime()
 
     echo result
-    echo "Finished in ", inSeconds(getTime() - start), " seconds."
+    echo "Finished in ", inSeconds(endTime - startTime), " seconds."
