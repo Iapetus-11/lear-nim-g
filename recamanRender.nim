@@ -1,3 +1,4 @@
+import sequtils
 import csfml
 import math
 import sets
@@ -20,10 +21,7 @@ proc recaman(n: int): seq[int] =
         result[i] = c
         already.incl(c)
 
-var
-    window = newRenderWindow(videoMode(800, 800), "My Window")
-    renderThread: system.Thread[void]
-
+var window = newRenderWindow(videoMode(800, 800), "My Window")
 window.verticalSyncEnabled = true
 
 proc drawBase() =
@@ -48,15 +46,19 @@ while window.open:
 
         drawBase()
 
-        for x in 0..799:
-            for yI in 700..800:
-                let y = math.sin(x.toFloat + yI.toFloat) * yI.toFloat
+        let recamanNumbers = recaman(200)
+        var vertexArray = newVertexArray(Lines)
 
-                let circle = newCircleShape()
-                circle.radius = 1
-                circle.position = vec2(x, y.toInt)
+        # i, 800-recamanNumbers[i]
 
-                window.draw(circle)
+        for i in 0..recamanNumbers.high:
+            var ls = vertexArray[i]
+            ls.position = vec2(i.toFloat, 800.0 - recamanNumbers[i].toFloat)
+            ls.color = color(255, 0, 255)
+            ls.texCoords = ls.position
+            vertexArray[i] = ls
+
+        window.draw(vertexArray)
 
         window.display()
 
