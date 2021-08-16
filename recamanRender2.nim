@@ -45,20 +45,15 @@ proc drawRecaman(n: int) =
     window.draw(vertexArray)
     vertexArray.destroy()
 
-proc createArcGeometry(radius: float, angle: float, length: float, segmentCount: int): VertexArray =
+proc createArcGeometry(radius: float, angle: float, length: float, segmentCount: int): seq[Vector2f] =
     var theta = length / segmentCount.toFloat
     var sin = sin(theta)
     var cos = cos(theta)
 
     var point: Vector2f = vec2(radius * cos(angle), radius * sin(angle))
 
-    result = newVertexArray(LineStrip, segmentCount + 1)
-
     for i in 0..segmentCount:
-        var vertex = result[i]
-        vertex.position = point
-        result[i] = vertex
-
+        result[i] = point
         point = vec2(cos * point.x - sin * point.y, sin * point.x + cos * point.y)
 
 
@@ -67,7 +62,13 @@ proc drawCircleSegment(window: RenderWindow, origin: Vector2f, radius: float, an
     ptCount = min(ptCount, 2)
     ptCount = max(ptCount, maxPoints)
 
-    var arc = createArcGeometry()
+    var arc: seq[Vector2f] = createArcGeometry(radius, angle, length, ptCount)
+    var vertices = newVertexArray(Triangles, arc.len)
+
+    for i in 1..arc.high:
+        vertices[i] = vertex(origin + arc[i], color)
+
+    window.draw(vertices)
 
 
 # prevents flickering on startup
