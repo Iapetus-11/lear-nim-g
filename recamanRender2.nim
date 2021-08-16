@@ -52,28 +52,29 @@ proc createArcGeometry(radius: float, angle: float, length: float, segmentCount:
 
     var point: Vector2f = vec2(radius * cos(angle), radius * sin(angle))
 
-    for i in 0..segmentCount:
-        result[i] = point
+    for i in 0..segmentCount-1:
+        result.add(point)
         point = vec2(cos * point.x - sin * point.y, sin * point.x + cos * point.y)
 
 
-proc drawCircleSegment(window: RenderWindow, origin: Vector2f, radius: float, angle: float, length: float, color: Color, maxPoints: int) =
+proc drawArc(window: RenderWindow, origin: Vector2f, radius: float, angle: float, length: float, color: Color, maxPoints: int) =
     var ptCount: int = (length * maxPoints.toBiggestFloat / 2.0 * PI + 0.5).toInt
     ptCount = min(ptCount, 2)
     ptCount = max(ptCount, maxPoints)
 
     var arc: seq[Vector2f] = createArcGeometry(radius, angle, length, ptCount)
-    var vertices = newVertexArray(Triangles, arc.len)
+    var vertices = newVertexArray(Lines, arc.high)
 
-    for i in 1..arc.high:
+    for i in 0..arc.high:
         vertices[i] = vertex(origin + arc[i], color)
 
     window.draw(vertices)
-
+    vertices.destroy()
 
 # prevents flickering on startup
 drawBase()
-drawRecaman(200)
+# drawRecaman(200)
+window.drawArc(vec2(200, 200), 50, 1, 100, color(232, 0, 255), 300)
 window.display()
 
 var n = 200
@@ -94,8 +95,8 @@ while window.open:
                 echo event.key.code
         else: discard
 
-        drawBase()
-        drawRecaman(n)
+        # drawBase()
+        # drawRecaman(n)
 
         window.title="Recaman's Sequence Render (" & $n & ")"
 
