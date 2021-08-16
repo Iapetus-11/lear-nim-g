@@ -20,7 +20,10 @@ proc recaman(n: int): seq[int] =
         result[i] = c
         already.incl(c)
 
-var window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "Recaman's Sequence Render")
+var ctxSettings = ContextSettings()
+ctxSettings.antialiasingLevel = 8
+
+var window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "Recaman's Sequence Render", settings=ctxSettings)
 window.verticalSyncEnabled = true
 
 proc drawBase() =
