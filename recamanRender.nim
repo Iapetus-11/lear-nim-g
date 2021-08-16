@@ -1,6 +1,9 @@
 import csfml
+import math
 import sets
 import os
+
+const BACKGROUND_COLOR = color(30, 30, 40)
 
 proc recaman(n: int): seq[int] =
     var already = [0].toHashset
@@ -18,16 +21,17 @@ proc recaman(n: int): seq[int] =
         already.incl(c)
 
 var
-    window = newRenderWindow(videoMode(800, 600), "My Window")
-    renderThread: Thread[void]
+    window = newRenderWindow(videoMode(800, 800), "My Window")
+    renderThread: system.Thread[void]
 
 window.verticalSyncEnabled = true
 
-proc renderInThread() =
-    {.gcsafe.}:
-        while window.open:
-            # draw
-            window.display()
+proc drawBase() =
+    window.clear(BACKGROUND_COLOR)
+
+# prevents flickering on startup
+drawBase()
+window.display()
 
 while window.open:
     var event: Event
@@ -42,8 +46,19 @@ while window.open:
                 echo event.key.code
         else: discard
 
-    window.clear(color(25, 25, 25))
-    window.display()
+        drawBase()
+
+        for x in 0..799:
+            for yI in 700..800:
+                let y = math.sin(x.toFloat + yI.toFloat) * yI.toFloat
+
+                let circle = newCircleShape()
+                circle.radius = 1
+                circle.position = vec2(x, y.toInt)
+
+                window.draw(circle)
+
+        window.display()
 
 
 window.destroy()
