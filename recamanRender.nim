@@ -5,6 +5,8 @@ import sets
 import os
 
 const BACKGROUND_COLOR = color(30, 30, 40)
+const WINDOW_X = 800
+const WINDOW_Y = 800
 
 proc recaman(n: int): seq[int] =
     var already = [0].toHashset
@@ -21,14 +23,28 @@ proc recaman(n: int): seq[int] =
         result[i] = c
         already.incl(c)
 
-var window = newRenderWindow(videoMode(800, 800), "My Window")
+var window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "Recaman Render")
 window.verticalSyncEnabled = true
 
 proc drawBase() =
     window.clear(BACKGROUND_COLOR)
 
+proc drawRecaman() =
+    let recamanNumbers = recaman(200)
+    var vertexArray = newVertexArray(LineStrip, recamanNumbers.len)
+
+    for i in 0..recamanNumbers.high:
+        var ls = vertexArray[i]
+        ls.position = vec2(i.toFloat * (WINDOW_X / recamanNumbers.len), WINDOW_Y - recamanNumbers[i].toFloat)
+        ls.color = color(255, 0, 255)
+        vertexArray[i] = ls
+
+    window.draw(vertexArray)
+    vertexArray.destroy()
+
 # prevents flickering on startup
 drawBase()
+drawRecaman()
 window.display()
 
 while window.open:
@@ -45,21 +61,7 @@ while window.open:
         else: discard
 
         drawBase()
-
-        let recamanNumbers = recaman(200)
-        var vertexArray = newVertexArray(Lines)
-
-        # i, 800-recamanNumbers[i]
-
-        for i in 0..recamanNumbers.high:
-            var ls = vertexArray[i]
-            ls.position = vec2(i.toFloat, 800.0 - recamanNumbers[i].toFloat)
-            ls.color = color(255, 0, 255)
-            ls.texCoords = ls.position
-            vertexArray[i] = ls
-
-        window.draw(vertexArray)
-
+        drawRecaman()
         window.display()
 
 
