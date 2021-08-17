@@ -30,6 +30,33 @@ window.verticalSyncEnabled = true
 proc drawBase() =
     window.clear(BACKGROUND_COLOR)
 
+proc degToRad(degrees: float): float =
+    return degrees * PI / 180
+
+# https://www.gamedev.net/forums/topic/568216-how-do-i-create-a-circle-in-sfml/4634110/
+# const double radius = ??;
+# const int maxSides = 32;
+# for ( int i = 0; i < 32; ++i ) {
+#	double angle = (PI * 2) * static_cast<double>(i)/maxSides;
+#	double y = sin(angle) * radius;
+#	double x = cos(angle) * radius;
+#   player.AddPoint((float)x, (float)y, sf::Color(0, 0, 255));
+# }
+
+
+proc drawArc(window: RenderWindow, origin: Vector2f, angle: float, rotation: float, radius: float, maxSides: int) =
+    var vertices = newVertexArray(LineStrip, maxSides)
+
+    for i in 0..maxSides-1:
+        let a = degToRad(rotation) + degToRad(angle) * i.toFloat()/maxSides.toFloat()
+        let y = sin(a) * radius
+        let x = cos(a) * radius
+
+        vertices[i] = vertex(origin + vec2(x, y), color(232, 0, 255))
+
+    window.draw(vertices)
+
+
 proc drawRecaman(n: int) =
     let recamanNumbers = recaman(n)
     var vertexArray = newVertexArray(LineStrip, recamanNumbers.len)
@@ -45,36 +72,10 @@ proc drawRecaman(n: int) =
     window.draw(vertexArray)
     vertexArray.destroy()
 
-proc createArcGeometry(radius: float, angle: float, length: float, segmentCount: int): seq[Vector2f] =
-    var theta = length / segmentCount.toFloat
-    var sin = sin(theta)
-    var cos = cos(theta)
-
-    var point: Vector2f = vec2(radius * cos(angle), radius * sin(angle))
-
-    for i in 0..segmentCount-1:
-        result.add(point)
-        point = vec2(cos * point.x - sin * point.y, sin * point.x + cos * point.y)
-
-
-proc drawArc(window: RenderWindow, origin: Vector2f, radius: float, angle: float, length: float, color: Color, maxPoints: int) =
-    var ptCount: int = (length * maxPoints.toBiggestFloat / 2.0 * PI + 0.5).toInt
-    ptCount = min(ptCount, 2)
-    ptCount = max(ptCount, maxPoints)
-
-    var arc: seq[Vector2f] = createArcGeometry(radius, angle, length, ptCount)
-    var vertices = newVertexArray(Lines, arc.high)
-
-    for i in 0..arc.high:
-        vertices[i] = vertex(origin + arc[i], color)
-
-    window.draw(vertices)
-    vertices.destroy()
-
 # prevents flickering on startup
 drawBase()
-# drawRecaman(200)
-window.drawArc(vec2(200, 200), 50, 1, 100, color(232, 0, 255), 300)
+drawRecaman(200)
+drawArc(window, vec2(200.0, 200.0), 180.0, 100.0, 50.0, 1000)
 window.display()
 
 var n = 200
@@ -98,9 +99,9 @@ while window.open:
         # drawBase()
         # drawRecaman(n)
 
-        window.title="Recaman's Sequence Render (" & $n & ")"
+        # window.title="Recaman's Sequence Render (" & $n & ")"
 
-        window.display()
+        # window.display()
 
 
 window.destroy()
