@@ -1,13 +1,16 @@
 import csfml
+import math
 
 const BACKGROUND_COLOR = color(30, 30, 40)
 const WINDOW_X = 800
 const WINDOW_Y = 600
 
-var ctxSettings = ContextSettings()
-ctxSettings.antialiasingLevel = 4
+type Vector2 = Vector2f or Vector2i
 
-var window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "My Window", settings=ctxSettings)
+var ctxSettings = ContextSettings()
+ctxSettings.antialiasingLevel = 16
+
+var window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "Peen", settings=ctxSettings)
 window.verticalSyncEnabled = true
 
 proc setActiveUnsafe(w: RenderWindow, active: bool): bool =
@@ -20,6 +23,31 @@ proc setActive(w: RenderWindow, active: bool) {.discardable.} =
     if not success:
         raise newException(CatchableError, "Unable to set active window state.")
 
+proc degToRad(degrees: float): float =
+    return degrees * PI / 180
+
+proc drawArc(w: RenderWindow, origin: Vector2f, angle: float, rotation: float, radius: float, maxSides: int, color: Color) =
+    var vertices = newVertexArray(LineStrip, maxSides)
+
+    for i in 0..maxSides-1:
+        let a = degToRad(rotation) + degToRad(angle) * i.toFloat() / (maxSides.toFloat() - 1.0)
+        let y = sin(a) * radius
+        let x = cos(a) * radius
+
+        vertices[i] = vertex(origin + vec2(x, y), color)
+
+    w.draw(vertices)
+    vertices.destroy()
+
+proc drawLineStrip(w: RenderWindow, origin: Vector2, points: openArray[Vector2], color: Color) =
+    var vertices = newVertexArray(LineStrip, points.len)
+
+    for i in 0..points.high:
+        vertices[i] = vertex(origin + points[i], color)
+
+    w.draw(vertices)
+    vertices.destroy()
+
 var drawThread: system.Thread[void]
 
 proc drawInThread() {.thread, gcsafe.} =
@@ -28,23 +56,17 @@ proc drawInThread() {.thread, gcsafe.} =
     window.clear(BACKGROUND_COLOR)
 
     let
-        color = color(232, 0, 255)
-        origin = vec2(600, 200)
-        points = [
-            origin,
-            origin + vec2(10, 0),
-            origin + vec2(10, 10),
-            origin + vec2(20, 10)
-        ]
-
-    var vertices = newVertexArray(LineStrip, 10)
-    for i in 0..points.high:
-        vertices[i] = vertex(points[i], color)
-
-    window.draw(vertices)
-    vertices.destroy()
+        origin = vec2(400, 300)
+        skin = color(241, 194, 125)
+    
+    window.drawArc(origin + vec2(0, -180), 180, 180, 30, 100, skin)
+    window.drawLineStrip(origin + vec2(-30, -180), [vec2(0, 0), vec2(0, 180)], skin)
+    window.drawLineStrip(origin + vec2(30, -180), [vec2(0, 0), vec2(0, 180)], skin)
+    window.drawArc(origin + vec2(-30, -180) + vec2(0, 180) + vec2(0, 30), 270, 0, 30, 100, skin)
+    window.drawArc(origin + vec2(-30, -180) + vec2(0, 180) + vec2(60, 30), 270, 270, 30, 100, skin)
 
     window.display()
+    window.setActive(false)
 
 window.setActive(false)
 createThread(drawThread, drawInThread)
