@@ -96,5 +96,4 @@ while window.open:
         window.title = &"Recaman's Sequence Render ({n})"
         window.display()
 
-
 window.destroy()
