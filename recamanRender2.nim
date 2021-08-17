@@ -58,7 +58,7 @@ proc drawRecaman(w: RenderWindow, recamanSeq: seq[int], start: int, stop: int) =
         drawArc(w, vec2(2, 2), 180, 0, r*5.0, ((r+1)*10).toInt, color(((255/recamanSeq.len)*r*5000).toInt, i, 255))
 
 var ctxSettings = ContextSettings()
-ctxSettings.antialiasingLevel = 8
+ctxSettings.antialiasingLevel = 16
 
 var window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "Recaman's Sequence Render", WindowStyle.Default, ctxSettings)
 window.verticalSyncEnabled = true
