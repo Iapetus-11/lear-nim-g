@@ -1,3 +1,4 @@
+import strformat
 import csfml
 import math
 import sets
@@ -54,12 +55,12 @@ proc drawArc(w: RenderWindow, origin: Vector2f, angle: float, rotation: float, r
 proc drawRecaman(w: RenderWindow, recamanSeq: seq[int], start: int, stop: int) =
     for i in start..stop-1:
         let r: float = recamanSeq[i].toFloat()
-        drawArc(w, vec2(2, 2), 180, 0, r*5.0, ((r+1)*10).toInt, color(((255/recamanSeq.len)*r*5000).toInt, 0, 255))
+        drawArc(w, vec2(2, 2), 180, 0, r*5.0, ((r+1)*10).toInt, color(((255/recamanSeq.len)*r*5000).toInt, i, 255))
 
 var ctxSettings = ContextSettings()
 ctxSettings.antialiasingLevel = 8
 
-var window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "Recaman's Sequence Render", settings=ctxSettings)
+var window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "Recaman's Sequence Render", WindowStyle.Default, ctxSettings)
 window.verticalSyncEnabled = true
 
 # prevents flickering on startup
@@ -67,7 +68,7 @@ drawBase(window)
 window.display()
 
 let recamanSeq = recaman(1_000_000)
-var n = 1
+var n = 3000
 
 while window.open:
     var event: Event
@@ -92,6 +93,7 @@ while window.open:
         else:
             drawRecaman(window, recamanSeq, n-1, n)
 
+        window.title = &"Recaman's Sequence Render ({n})"
         window.display()
 
 
