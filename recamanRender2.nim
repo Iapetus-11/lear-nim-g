@@ -3,8 +3,8 @@ import math
 import sets
 
 const BACKGROUND_COLOR = color(30, 30, 40)
-const WINDOW_X = 800
-const WINDOW_Y = 800
+const WINDOW_X = 1000
+const WINDOW_Y = 1000
 
 proc recaman(n: int): seq[int] =
     var already = [0].toHashset
@@ -21,17 +21,11 @@ proc recaman(n: int): seq[int] =
         result[i] = c
         already.incl(c)
 
-var ctxSettings = ContextSettings()
-ctxSettings.antialiasingLevel = 8
-
-var window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "Recaman's Sequence Render", settings=ctxSettings)
-window.verticalSyncEnabled = true
-
-proc drawBase() =
-    window.clear(BACKGROUND_COLOR)
-
 proc degToRad(degrees: float): float =
     return degrees * PI / 180
+
+proc drawBase(w: RenderWindow) =
+    w.clear(BACKGROUND_COLOR)
 
 # https://www.gamedev.net/forums/topic/568216-how-do-i-create-a-circle-in-sfml/4634110/
 # const double radius = ??;
@@ -43,42 +37,37 @@ proc degToRad(degrees: float): float =
 #   player.AddPoint((float)x, (float)y, sf::Color(0, 0, 255));
 # }
 
-
-proc drawArc(window: RenderWindow, origin: Vector2f, angle: float, rotation: float, radius: float, maxSides: int) =
+# drawArc(window, vec2(200.0, 200.0), 180.0, 100.0, 50.0, 1000)
+proc drawArc(w: RenderWindow, origin: Vector2f, angle: float, rotation: float, radius: float, maxSides: int, color: Color) =
     var vertices = newVertexArray(LineStrip, maxSides)
 
     for i in 0..maxSides-1:
-        let a = degToRad(rotation) + degToRad(angle) * i.toFloat()/maxSides.toFloat()
+        let a = degToRad(rotation) + degToRad(angle) * i.toFloat() / maxSides.toFloat()
         let y = sin(a) * radius
         let x = cos(a) * radius
 
-        vertices[i] = vertex(origin + vec2(x, y), color(232, 0, 255))
+        vertices[i] = vertex(origin + vec2(x, y), color)
 
-    window.draw(vertices)
+    w.draw(vertices)
+    vertices.destroy()
 
+proc drawRecaman(w: RenderWindow, recamanSeq: seq[int], start: int, stop: int) =
+    for i in start..stop-1:
+        let r: float = recamanSeq[i].toFloat()
+        drawArc(w, vec2(2, 2), 180, 0, r*5.0, ((r+1)*10).toInt, color(((255/recamanSeq.len)*r*5000).toInt, 0, 255))
 
-proc drawRecaman(n: int) =
-    let recamanNumbers = recaman(n)
-    var vertexArray = newVertexArray(LineStrip, recamanNumbers.len)
+var ctxSettings = ContextSettings()
+ctxSettings.antialiasingLevel = 8
 
-    let heightAdjust = WINDOW_Y / recamanNumbers.max
-
-    for i in 0..recamanNumbers.high:
-        var ls = vertexArray[i]
-        ls.position = vec2(i.toFloat * (WINDOW_X / recamanNumbers.len), WINDOW_Y - (recamanNumbers[i].toFloat * heightAdjust))
-        ls.color = color(255, 0, 255)
-        vertexArray[i] = ls
-
-    window.draw(vertexArray)
-    vertexArray.destroy()
+var window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "Recaman's Sequence Render", settings=ctxSettings)
+window.verticalSyncEnabled = true
 
 # prevents flickering on startup
-drawBase()
-drawRecaman(200)
-drawArc(window, vec2(200.0, 200.0), 180.0, 100.0, 50.0, 1000)
+drawBase(window)
 window.display()
 
-var n = 200
+let recamanSeq = recaman(1_000_000)
+var n = 1
 
 while window.open:
     var event: Event
@@ -89,19 +78,21 @@ while window.open:
         of EventType.KeyPressed:
             case event.key.code:
             of KeyCode.Escape: window.close()
-            of KeyCode.Right: n += 50
+            of KeyCode.Right:
+                if n < recamanSeq.high: n += 1
             of KeyCode.Left:
-                if n > 50: n -= 50
+                if n > 2: n -= 1
             else:
                 echo event.key.code
         else: discard
 
-        # drawBase()
-        # drawRecaman(n)
+        if event.kind == EventType.KeyPressed and event.key.code != KeyCode.Right:
+            drawBase(window)
+            drawRecaman(window, recamanSeq, 0, n)
+        else:
+            drawRecaman(window, recamanSeq, n-1, n)
 
-        # window.title="Recaman's Sequence Render (" & $n & ")"
-
-        # window.display()
+        window.display()
 
 
 window.destroy()
