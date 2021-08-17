@@ -43,7 +43,7 @@ proc drawArc(w: RenderWindow, origin: Vector2f, angle: float, rotation: float, r
     var vertices = newVertexArray(LineStrip, maxSides)
 
     for i in 0..maxSides-1:
-        let a = degToRad(rotation) + degToRad(angle) * i.toFloat() / maxSides.toFloat()
+        let a = degToRad(rotation) + degToRad(angle) * i.toFloat() / (maxSides.toFloat() - 1.0)
         let y = sin(a) * radius
         let x = cos(a) * radius
 
