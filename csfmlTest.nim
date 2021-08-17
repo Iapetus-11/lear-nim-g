@@ -55,7 +55,7 @@ proc drawInThread() {.thread, gcsafe.} =
 
     window.clear(BACKGROUND_COLOR)
 
-    let
+    var
         origin = vec2(400, 300)
         skin = color(241, 194, 125)
     
@@ -64,6 +64,14 @@ proc drawInThread() {.thread, gcsafe.} =
     window.drawLineStrip(origin + vec2(30, -180), [vec2(0, 0), vec2(0, 180)], skin)
     window.drawArc(origin + vec2(-30, -180) + vec2(0, 180) + vec2(0, 30), 270, 0, 30, 100, skin)
     window.drawArc(origin + vec2(-30, -180) + vec2(0, 180) + vec2(60, 30), 270, 270, 30, 100, skin)
+
+    var color = color(232, 0, 232)
+    origin = vec2(200, 300)
+
+    window.drawLineStrip(origin, [vec2(0, 0), vec2(0, 20), vec2(20, 20), vec2(20, 0), vec2(0, 0)], color)
+    window.drawLineStrip(origin + vec2(7, 7), [vec2(0, 0), vec2(0, 20), vec2(20, 20), vec2(20, 0), vec2(0, 0)], color)
+    window.drawLineStrip(origin, [vec2(0, 0), vec2(7, 7), vec2(27, 7), vec2(20, 0)], color)
+    window.drawLineStrip(origin + vec2(0, 20), [vec2(0, 0), vec2(7, 7), vec2(27, 7), vec2(20, 0)], color)
 
     window.display()
     # discard window.capture().saveToFile("sussy.png")
