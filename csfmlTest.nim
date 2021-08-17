@@ -66,6 +66,7 @@ proc drawInThread() {.thread, gcsafe.} =
     window.drawArc(origin + vec2(-30, -180) + vec2(0, 180) + vec2(60, 30), 270, 270, 30, 100, skin)
 
     window.display()
+    # discard window.capture().saveToFile("sussy.png")
     window.setActive(false)
 
 window.setActive(false)
@@ -83,6 +84,5 @@ while window.open:
             else:
                 echo event.key.code
         else: discard
-
 
 window.destroy()
