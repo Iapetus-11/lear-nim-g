@@ -67,8 +67,8 @@ window.verticalSyncEnabled = true
 drawBase(window)
 window.display()
 
-let recamanSeq = recaman(1_000_000)
-var n = 3000
+let recamanSeq = recaman(10_000)
+var n = 1
 
 while window.open:
     var event: Event
