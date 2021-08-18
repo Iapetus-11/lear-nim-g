@@ -2,9 +2,16 @@ import csfml
 import sets
 
 const BACKGROUND_COLOR = color(30, 30, 40)
-const WINDOW_X = 800
-const WINDOW_Y = 800
 const WINDOW_TITLE = "Recaman's Sequence Render"
+
+when defined windows:
+    import winim/lean
+
+    let windowX = (GetSystemMetrics(SM_CXSCREEN).toFloat() / 1.25).toInt
+    let windowY = (GetSystemMetrics(SM_CYSCREEN).toFloat() / 1.25).toInt
+else:
+    let windowX = 800
+    let windowY = 600
 
 proc recaman(n: int): seq[int] =
     var already = [0].toHashset
@@ -21,7 +28,7 @@ proc recaman(n: int): seq[int] =
         result[i] = c
         already.incl(c)
 
-const RECAMAN_NUMBERS = recaman(200_000)
+const RECAMAN_NUMBERS = recaman(100_001)
 
 proc drawBase(w: RenderWindow) =
     w.clear(BACKGROUND_COLOR)
@@ -29,11 +36,11 @@ proc drawBase(w: RenderWindow) =
 proc drawRecaman(w: RenderWindow, n: int) =
     var vertices = newVertexArray(LineStrip, n)
     let max = RECAMAN_NUMBERS[0..n].max
-    let heightAdjust = WINDOW_Y / max
+    let heightAdjust: float = windowY.toFloat() / max.toFloat()
 
     for i in 0..n-1:
         vertices[i] = vertex(
-            vec2(i.toFloat * (WINDOW_X / n), WINDOW_Y - (RECAMAN_NUMBERS[i].toFloat * heightAdjust)),
+            vec2(i.toFloat * (windowX / n), windowY.toFloat() - (RECAMAN_NUMBERS[i].toFloat() * heightAdjust)),
             color(toInt((n/i)), toInt((i*255)/n), 255)
         )
 
@@ -42,7 +49,7 @@ proc drawRecaman(w: RenderWindow, n: int) =
 
 var
     ctxSettings = ContextSettings(antialiasingLevel: 16)
-    window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), WINDOW_TITLE, WindowStyle.Default, ctxSettings)
+    window = newRenderWindow(videoMode(cast[cint](windowX), cast[cint](windowY)), WINDOW_TITLE, WindowStyle.Default, ctxSettings)
     numFont = newFont("Roboto-Black.ttf")
     numText = newText("200 | " & $RECAMAN_NUMBERS[200], numFont, 40)
 
@@ -62,8 +69,8 @@ while window.open:
 
     while window.pollEvent(event):
         case event.kind:
-        of EventType.Closed: window.close()
-        of EventType.KeyPressed:
+        of csfml.EventType.Closed: window.close()
+        of csfml.EventType.KeyPressed:
             case event.key.code:
             of KeyCode.Escape: window.close()
             of KeyCode.Right:
