@@ -20,39 +20,44 @@ proc recaman(n: int): seq[int] =
         result[i] = c
         already.incl(c)
 
-var ctxSettings = ContextSettings()
-ctxSettings.antialiasingLevel = 8
+const RECAMAN_NUMBERS = recaman(200_000)
 
-var window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "Recaman's Sequence Render", settings=ctxSettings)
-window.verticalSyncEnabled = true
+proc drawBase(w: RenderWindow) =
+    w.clear(BACKGROUND_COLOR)
 
-proc drawBase() =
-    window.clear(BACKGROUND_COLOR)
+proc drawRecaman(w: RenderWindow, n: int) =
+    var vertices = newVertexArray(LineStrip, n)
+    let max = RECAMAN_NUMBERS[0..n].max
+    let heightAdjust = WINDOW_Y / max
 
-proc drawRecaman(n: int) =
-    let recamanNumbers = recaman(n)
-    var vertexArray = newVertexArray(LineStrip, recamanNumbers.len)
+    for i in 0..n-1:
+        vertices[i] = vertex(
+            vec2(i.toFloat * (WINDOW_X / n), WINDOW_Y - (RECAMAN_NUMBERS[i].toFloat * heightAdjust)),
+            color(toInt((n/i)), toInt((i*255)/n), 255)
+        )
 
-    let heightAdjust = WINDOW_Y / recamanNumbers.max
+    w.draw(vertices)
+    vertices.destroy()
 
-    for i in 0..recamanNumbers.high:
-        var ls = vertexArray[i]
-        ls.position = vec2(i.toFloat * (WINDOW_X / recamanNumbers.len), WINDOW_Y - (recamanNumbers[i].toFloat * heightAdjust))
-        ls.color = color(255, 0, 255)
-        vertexArray[i] = ls
+var
+    ctxSettings = ContextSettings(antialiasingLevel: 16)
+    window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "Recaman's Sequence Render", WindowStyle.Default, ctxSettings)
+    numFont = newFont("Roboto-Black.ttf")
+    numText = newText("200", numFont, 50)
 
-    window.draw(vertexArray)
-    vertexArray.destroy()
+numText.position = vec2(10, 0)
 
 # prevents flickering on startup
-drawBase()
-drawRecaman(200)
+window.drawBase()
+window.drawRecaman(200)
+window.draw(numText)
 window.display()
 
 var n = 200
 
 while window.open:
     var event: Event
+    var doSave = false
 
     while window.pollEvent(event):
         case event.kind:
@@ -60,17 +65,26 @@ while window.open:
         of EventType.KeyPressed:
             case event.key.code:
             of KeyCode.Escape: window.close()
-            of KeyCode.Right: n += 50
+            of KeyCode.Right:
+                if n + 50 < RECAMAN_NUMBERS.len:
+                    n += 50
             of KeyCode.Left:
                 if n > 50: n -= 50
-            else:
-                echo event.key.code
+            of KeyCode.S: doSave = true
+            else: discard
         else: discard
 
-        drawBase()
-        drawRecaman(n)
+        numText.str = $n
 
-        window.title="Recaman's Sequence Render (" & $n & ")"
+        window.drawBase()
+        window.drawRecaman(n)
+        window.draw(numText)
+
+        if doSave:
+            discard window.capture().saveToFile("recamanRender.png")
+            doSave = false
+
+        # window.title="Recaman's Sequence Render (" & $n & ")"
 
         window.display()
 
