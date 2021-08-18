@@ -4,6 +4,7 @@ import sets
 const BACKGROUND_COLOR = color(30, 30, 40)
 const WINDOW_X = 800
 const WINDOW_Y = 800
+const WINDOW_TITLE = "Recaman's Sequence Render"
 
 proc recaman(n: int): seq[int] =
     var already = [0].toHashset
@@ -41,9 +42,9 @@ proc drawRecaman(w: RenderWindow, n: int) =
 
 var
     ctxSettings = ContextSettings(antialiasingLevel: 16)
-    window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "Recaman's Sequence Render", WindowStyle.Default, ctxSettings)
+    window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), WINDOW_TITLE, WindowStyle.Default, ctxSettings)
     numFont = newFont("Roboto-Black.ttf")
-    numText = newText("200", numFont, 50)
+    numText = newText("200 | " & $RECAMAN_NUMBERS[200], numFont, 40)
 
 numText.position = vec2(10, 0)
 
@@ -74,17 +75,17 @@ while window.open:
             else: discard
         else: discard
 
-        numText.str = $n
+        numText.str = $n & " | " & $RECAMAN_NUMBERS[n]
 
         window.drawBase()
         window.drawRecaman(n)
         window.draw(numText)
 
         if doSave:
+            window.title = "saving..."
             discard window.capture().saveToFile("recamanRender.png")
             doSave = false
-
-        # window.title="Recaman's Sequence Render (" & $n & ")"
+            window.title = WINDOW_TITLE
 
         window.display()
 
