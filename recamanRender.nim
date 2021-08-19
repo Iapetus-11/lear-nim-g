@@ -28,14 +28,20 @@ proc recaman(n: int): seq[int] =
         result[i] = c
         already.incl(c)
 
-const RECAMAN_NUMBERS = recaman(100_001)
+var
+    RECAMAN_NUMBERS = recaman(100_001)
+    RECAMAN_MAXES = block:
+        var result: seq[int]
+        for i in 0..RECAMAN_NUMBERS.high:
+            result.add(max(RECAMAN_NUMBERS[0..i]))
+        result
 
 proc drawBase(w: RenderWindow) =
     w.clear(BACKGROUND_COLOR)
 
 proc drawRecaman(w: RenderWindow, n: int) =
-    var vertices = newVertexArray(LineStrip, n)
-    let max = RECAMAN_NUMBERS[0..n].max
+    var vertices = newVertexArray(PrimitiveType.LineStrip, n)
+    let max = RECAMAN_MAXES[n]
     let heightAdjust: float = windowY.toFloat() / max.toFloat()
 
     for i in 0..n-1:
