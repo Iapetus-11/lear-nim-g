@@ -1,0 +1,1 @@
+nim compile -d:danger --opt:speed|size
