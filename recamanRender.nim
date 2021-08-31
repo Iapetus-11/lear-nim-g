@@ -29,16 +29,16 @@ proc recaman(n: int): seq[int] =
         result[i] = c
         already.incl(c)
 
-var
-    RECAMAN_NUMBERS = recaman(100_001)
-    RECAMAN_MAXES = block:
+let
+    recamanNumbers = recaman(100_001)
+    recamanMaxes = block:
         var
             result: seq[int]
             currentMax = 0
 
-        for i in 0..RECAMAN_NUMBERS.high:
-            if RECAMAN_NUMBERS[i] > currentMax:
-                currentMax = RECAMAN_NUMBERS[i]
+        for i in 0..recamanNumbers.high:
+            if recamanNumbers[i] > currentMax:
+                currentMax = recamanNumbers[i]
 
             result.add(currentMax)
 
@@ -49,11 +49,11 @@ proc drawBase(w: RenderWindow) =
 
 proc drawRecaman(w: RenderWindow, n: int) =
     var vertices = newVertexArray(PrimitiveType.LineStrip, n)
-    let heightAdjust = windowY / RECAMAN_MAXES[n]
+    let heightAdjust = windowY / recamanMaxes[n]
 
     for i in 0..n-1:
         vertices[i] = vertex(
-            vec2(i.toFloat * (windowX / n), windowY.toFloat() - (RECAMAN_NUMBERS[i].toFloat() * heightAdjust)),
+            vec2(i.toFloat * (windowX / n), windowY.toFloat() - (recamanNumbers[i].toFloat() * heightAdjust)),
             color(toInt((n/i)), toInt((i*255)/n), 255)
         )
 
@@ -64,7 +64,7 @@ var
     ctxSettings = ContextSettings(antialiasingLevel: 16)
     window = newRenderWindow(videoMode(cast[cint](windowX), cast[cint](windowY)), WINDOW_TITLE, WindowStyle.Default, ctxSettings)
     numFont = newFont("Roboto-Black.ttf")
-    numText = newText("200 | " & $RECAMAN_NUMBERS[200], numFont, 40)
+    numText = newText("200 | " & $recamanNumbers[200], numFont, 40)
 
 numText.position = vec2(10, 0)
 
@@ -87,14 +87,14 @@ while window.open:
             case event.key.code:
             of KeyCode.Escape: window.close()
             of KeyCode.Right:
-                if n + 50 < RECAMAN_NUMBERS.len: n += 50
+                if n + 50 < recamanNumbers.len: n += 50
             of KeyCode.Left:
                 if n > 50: n -= 50
             of KeyCode.S: doSave = true
             else: discard
         else: discard
 
-        numText.str = $n & " | " & $RECAMAN_NUMBERS[n]
+        numText.str = $n & " | " & $recamanNumbers[n]
 
         window.drawBase()
         window.drawRecaman(n)
