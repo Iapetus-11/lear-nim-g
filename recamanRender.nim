@@ -31,9 +31,16 @@ proc recaman(n: int): seq[int] =
 var
     RECAMAN_NUMBERS = recaman(100_001)
     RECAMAN_MAXES = block:
-        var result: seq[int]
+        var
+            result: seq[int]
+            currentMax = 0
+
         for i in 0..RECAMAN_NUMBERS.high:
-            result.add(max(RECAMAN_NUMBERS[0..i]))
+            if RECAMAN_NUMBERS[i] > currentMax:
+                currentMax = RECAMAN_NUMBERS[i]
+
+            result.add(currentMax)
+
         result
 
 proc drawBase(w: RenderWindow) =
