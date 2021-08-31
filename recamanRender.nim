@@ -48,8 +48,7 @@ proc drawBase(w: RenderWindow) =
 
 proc drawRecaman(w: RenderWindow, n: int) =
     var vertices = newVertexArray(PrimitiveType.LineStrip, n)
-    let max = RECAMAN_MAXES[n]
-    let heightAdjust: float = windowY.toFloat() / max.toFloat()
+    let heightAdjust = windowY / RECAMAN_MAXES[n]
 
     for i in 0..n-1:
         vertices[i] = vertex(
@@ -87,8 +86,7 @@ while window.open:
             case event.key.code:
             of KeyCode.Escape: window.close()
             of KeyCode.Right:
-                if n + 50 < RECAMAN_NUMBERS.len:
-                    n += 50
+                if n + 50 < RECAMAN_NUMBERS.len: n += 50
             of KeyCode.Left:
                 if n > 50: n -= 50
             of KeyCode.S: doSave = true
@@ -111,3 +109,5 @@ while window.open:
 
 
 window.destroy()
+numFont.destroy()
+numText.destroy()
