@@ -16,10 +16,18 @@ proc doMaze(sizeX: int, sizeY: int) =
 
     for x in 0..sizeX-1:
         maze.add(newSeq[bool]())
-
         for y in 0..sizeY-1:
-            maze[x].add(rand(100)/100 > 0.4)
+            maze[x].add(true)
 
+    for x in 1..sizeX-2:
+        for y in 1..sizeY-2:
+            if rand(100) > 20:
+                # if (maze[x-1][y] and maze[x][y-1] and maze[x+1][y] and maze[x][y+1]):
+                #     maze[x][y] = false
+
+                if (maze[x-1][y] and maze[x+1][y]) or (maze[x][y-1] and maze[x][y+1]) or ():
+                    maze[x][y] = false
+    
     for x in 0..sizeX-1:
         for y in 0..sizeY-1:
             var o = " "
