@@ -1,5 +1,6 @@
 import csfml
 import sets
+import os
 
 const
     BACKGROUND_COLOR = color(30, 30, 40)
@@ -74,13 +75,15 @@ window.drawRecaman(200)
 window.draw(numText)
 window.display()
 
-var n = 200
+var
+    n = 200
+    doPlay = false
 
 while window.open:
     var event: Event
     var doSave = false
 
-    while window.pollEvent(event):
+    while window.pollEvent(event) or doPlay:
         case event.kind:
         of csfml.EventType.Closed: window.close()
         of csfml.EventType.KeyPressed:
@@ -90,9 +93,19 @@ while window.open:
                 if n + 50 < recamanNumbers.len: n += 50
             of KeyCode.Left:
                 if n > 50: n -= 50
+            of KeyCode.R: n = 200
             of KeyCode.S: doSave = true
+            of KeyCode.Space:
+                doPlay = not doPlay
+                sleep(100)
             else: discard
         else: discard
+
+        if doPlay:
+            if n == recamanNumbers.high:
+                doPlay = false
+            else:
+                n += 1
 
         numText.str = $n & " | " & $recamanNumbers[n]
 
