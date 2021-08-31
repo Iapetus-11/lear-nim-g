@@ -1,8 +1,9 @@
 import csfml
 import sets
 
-const BACKGROUND_COLOR = color(30, 30, 40)
-const WINDOW_TITLE = "Recaman's Sequence Render"
+const
+    BACKGROUND_COLOR = color(30, 30, 40)
+    WINDOW_TITLE = "Recaman's Sequence Render"
 
 when defined windows:
     import winim/lean
