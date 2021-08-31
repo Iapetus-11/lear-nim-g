@@ -78,17 +78,24 @@ window.display()
 var
     n = 200
     doPlay = false
+    doExit = false
+    doSave = false
 
 while window.open:
     var event: Event
-    var doSave = false
+
+    if doExit:
+        window.close()
+        break
 
     while window.pollEvent(event) or doPlay:
         case event.kind:
         of csfml.EventType.Closed: window.close()
         of csfml.EventType.KeyPressed:
             case event.key.code:
-            of KeyCode.Escape: window.close()
+            of KeyCode.Escape:
+                doExit = true
+                break
             of KeyCode.Right:
                 if n + 50 < recamanNumbers.len: n += 50
             of KeyCode.Left:
