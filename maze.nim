@@ -19,14 +19,24 @@ proc doMaze(sizeX: int, sizeY: int) =
         for y in 0..sizeY-1:
             maze[x].add(true)
 
+    proc fill(x: int, y: int) =
+        let leftWall = maze[x-1][y-1] and maze[x-1][y] and maze[x-1][y+1]
+        let rightWall = maze[x+1][y-1] and maze[x+1][y] and maze[x+1][y+1]
+
+        let topWall = maze[x-1][y+1] and maze[x][y+1] and maze[x+1][y+1]
+        let bottomWall = maze[x-1][y-1] and maze[x][y-1] and maze[x+1][y-1]
+
+        if (leftWall and rightWall) or (topWall and bottomWall) or (leftWall and topWall) or (rightWall and topWall) or (leftWall and bottomWall) or (rightWall and bottomWall):
+            if true or (maze[x-1][y] and maze[x+1][y]) or (maze[x][y-1] and maze[x][y+1]):
+                maze[x][y] = false
+
     for x in 1..sizeX-2:
         for y in 1..sizeY-2:
-            if rand(100) > 20:
-                # if (maze[x-1][y] and maze[x][y-1] and maze[x+1][y] and maze[x][y+1]):
-                #     maze[x][y] = false
+            if rand(100) > 10:
+                # if (maze[x-1][y] and maze[x+1][y]) or (maze[x][y-1] and maze[x][y+1]):
+                    # maze[x][y] = false
 
-                if (maze[x-1][y] and maze[x+1][y]) or (maze[x][y-1] and maze[x][y+1]) or ():
-                    maze[x][y] = false
+                fill(x, y)
     
     for x in 0..sizeX-1:
         for y in 0..sizeY-1:
@@ -38,7 +48,7 @@ proc doMaze(sizeX: int, sizeY: int) =
             stdout.write(o)
         stdout.writeLine("")
 
-doMaze(20, 40)
+doMaze(20, 60)
 
 # while window.open:
 #     var event: Event
