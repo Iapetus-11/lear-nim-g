@@ -1,7 +1,6 @@
 type CircleSeq[T] = ref object of RootObj
     s: seq[T]
 
-
 proc `[]`[T](s: CircleSeq[T], i: int): T =
     return s.s[i mod s.s.len]
 
