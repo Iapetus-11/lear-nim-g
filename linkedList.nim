@@ -20,6 +20,31 @@ proc len[T](l: LinkedList[T]): int =
     for n in nodes[T](l):
         result += 1
 
+proc high[T](l: LinkedList[T]): int =
+    return l.len - 1
+
+proc nodeAt[T](l: LinkedList[T], index: int): Node[T] =
+    var i = 0
+
+    for n in nodes[T](l):
+        if i == index:
+            return n
+
+        i += 1
+
+proc `[]`[T](l: LinkedList[T], index: int): T =
+    return l.nodeAt(index).value
+
+proc `[]=`[T](l: LinkedList[T], index: int, value: T) =
+    var i = 0
+
+    for n in nodes[T](l):
+        if i == index:
+            n.value = value
+            return
+
+        i += 1
+
 proc `$`[T](n: Node[T]): string =
     return "Node<" & repr(n.value) & ">"
 
@@ -27,7 +52,7 @@ proc `$`[T](l: LinkedList[T]): string =
     result = "LinkedList(["
     var count = 0
 
-    for node in nodes(l):
+    for node in nodes[T](l):
         result &= $node & ", "
         count += 1
     
@@ -49,6 +74,22 @@ proc add[T](l: LinkedList[T], value: T) =
 
         last.next = newNode
 
+proc delete[T](l: LinkedList[T], index: int) =
+    if 0 > index or index > l.len:
+        raise newException(IndexDefect, "Invalid index")
+
+    if l.len == 0:
+        raise newException(IndexDefect, "Can't delete an item from an empty LinkedList.")
+
+    if l.len == 1:
+        l.head = nil
+    elif index == 0:
+        l.head = l.nodeAt(1)
+    elif index == l.high:
+        l.nodeAt(l.high-1).next = nil
+    else:
+        l.nodeAt(index-1).next = l.nodeAt(index+1)
+
 when isMainModule:
     import random; randomize()
     
@@ -57,4 +98,13 @@ when isMainModule:
     for i in 0..20:
         list.add(rand(100))
 
+    echo list
+
+    list.delete(1)
+    echo list
+
+    list.delete(0)
+    echo list
+
+    list.delete(list.high)
     echo list
