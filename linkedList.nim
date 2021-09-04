@@ -39,8 +39,6 @@ proc `$`[T](l: LinkedList[T]): string =
 proc add[T](l: LinkedList[T], value: T) =
     let newNode = Node[T](value: value, next: nil)
 
-    echo l.len
-
     if l.len == 0:
         l.head = newNode
     else:
@@ -51,17 +49,12 @@ proc add[T](l: LinkedList[T], value: T) =
 
         last.next = newNode
 
-var list = LinkedList[char](head: nil)
-echo list
+when isMainModule:
+    import random; randomize()
+    
+    var list = LinkedList[int](head: nil)
 
-list.add('1')
-echo list
+    for i in 0..20:
+        list.add(rand(100))
 
-list.add('s')
-echo list
-
-list.add('u')
-echo list
-
-list.add('s')
-echo list
+    echo list
