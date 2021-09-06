@@ -1,6 +1,6 @@
 import std/[random, strutils, streams, net]
 
-randomize();
+randomize()
 
 const MessageTypes = (
     SERVERDATA_AUTH: 3,

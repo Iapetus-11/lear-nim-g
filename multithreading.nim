@@ -1,4 +1,6 @@
-import std/random; randomize()
+import std/random
+
+randomize()
 
 proc doSomething(x: int) {.thread.} =
     let a = rand(100) + x

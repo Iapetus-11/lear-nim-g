@@ -1,5 +1,8 @@
-import std/random; randomize()
-import nigui; app.init()
+import std/random
+import nigui
+
+randomize()
+app.init()
 
 var
     window = newWindow()
