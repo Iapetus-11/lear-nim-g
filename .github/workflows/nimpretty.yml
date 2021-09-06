@@ -14,6 +14,7 @@ jobs:
       - uses: jiro4989/setup-nim-action@v1
 
       - name: autonimpretty
+        continue-on-error: true
         run: |
           for f in *.nim; do nimpretty --maxLineLen:100 --indent:4 ${f}; done;
           git config --global user.name github-actions
