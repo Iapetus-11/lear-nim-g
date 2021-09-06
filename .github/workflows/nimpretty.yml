@@ -1,4 +1,4 @@
-name: Auto nimpretty
+name: Prettify Nim Code
 
 on: [push]
 
