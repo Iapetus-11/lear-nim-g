@@ -25,7 +25,7 @@ proc recaman(n: int): seq[int] =
 
         if c < 0 or (c in already):
             c = result[i - 1] + i
-        
+
         result[i] = c
         already.incl(c)
 
@@ -53,7 +53,8 @@ proc drawRecaman(w: RenderWindow, n: int) =
 
     for i in 0..n-1:
         vertices[i] = vertex(
-            vec2(i.toFloat * (windowX / n), windowY.toFloat() - (recamanNumbers[i].toFloat() * heightAdjust)),
+            vec2(i.toFloat * (windowX / n), windowY.toFloat() - (recamanNumbers[i].toFloat() *
+                    heightAdjust)),
             color(toInt((n/i)), toInt((i*255)/n), 255)
         )
 
@@ -62,7 +63,8 @@ proc drawRecaman(w: RenderWindow, n: int) =
 
 var
     ctxSettings = ContextSettings(antialiasingLevel: 16)
-    window = newRenderWindow(videoMode(cast[cint](windowX), cast[cint](windowY)), WINDOW_TITLE, WindowStyle.Default, ctxSettings)
+    window = newRenderWindow(videoMode(cast[cint](windowX), cast[cint](windowY)), WINDOW_TITLE,
+            WindowStyle.Default, ctxSettings)
     numFont = newFont("Roboto-Black.ttf")
     numText = newText("200 | " & $recamanNumbers[200], numFont, 40)
 

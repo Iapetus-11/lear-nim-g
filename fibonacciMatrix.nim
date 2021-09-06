@@ -37,7 +37,7 @@ when isMainModule:
     except IndexDefect:
         stdout.write("What digit of the Fibonacci sequence to calculate? ")
         n = parseInt(readLine(stdin))
-        
+
     let startTime = getTime()
     let result = fibonacci(n)
     let duration = inMilliSeconds(getTime() - startTime).toBiggestFloat / 1000

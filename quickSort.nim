@@ -12,7 +12,7 @@ proc partition(arr: var openArray[int], iLow: int, iHigh: int): int =
         if (arr[j] < pivot):
             i += 1
             swap(arr, i, j)
-        
+
     swap(arr, i + 1, iHigh)
     return i + 1
 

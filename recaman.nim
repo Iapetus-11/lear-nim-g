@@ -13,7 +13,7 @@ proc recaman(n: int): seq[int] =
 
         if c < 0 or (c in already):
             c = result[i - 1] + i
-        
+
         result[i] = c
         already.incl(c)
 
@@ -25,7 +25,7 @@ when isMainModule:
     except IndexDefect:
         stdout.write("How many iterations? ")
         n = parseInt(readLine(stdin))
-        
+
     let startTime = getTime()
     let result = recaman(n)
     let duration = inMilliSeconds(getTime() - startTime).toBiggestFloat / 1000

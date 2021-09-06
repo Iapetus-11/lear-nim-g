@@ -16,7 +16,7 @@ proc recaman(n: int): seq[int] =
 
         if c < 0 or (c in already):
             c = result[i - 1] + i
-        
+
         result[i] = c
         already.incl(c)
 
@@ -37,7 +37,8 @@ proc drawBase(w: RenderWindow) =
 # }
 
 # drawArc(window, vec2(200.0, 200.0), 180.0, 100.0, 50.0, 1000)
-proc drawArc(w: RenderWindow, origin: Vector2f, angle: float, rotation: float, radius: float, maxSides: int, color: Color) =
+proc drawArc(w: RenderWindow, origin: Vector2f, angle: float, rotation: float, radius: float,
+        maxSides: int, color: Color) =
     var vertices = newVertexArray(LineStrip, maxSides)
 
     for i in 0..maxSides-1:
@@ -53,12 +54,14 @@ proc drawArc(w: RenderWindow, origin: Vector2f, angle: float, rotation: float, r
 proc drawRecaman(w: RenderWindow, recamanSeq: seq[int], start: int, stop: int) =
     for i in start..stop-1:
         let r: float = recamanSeq[i].toFloat()
-        drawArc(w, vec2(2, 2), 180, 0, r*5.0, ((r+1)*10).toInt, color(((255/recamanSeq.len)*r*5000).toInt, i, 255))
+        drawArc(w, vec2(2, 2), 180, 0, r*5.0, ((r+1)*10).toInt, color(((
+                255/recamanSeq.len)*r*5000).toInt, i, 255))
 
 var ctxSettings = ContextSettings()
 ctxSettings.antialiasingLevel = 16
 
-var window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "Recaman's Sequence Render", WindowStyle.Default, ctxSettings)
+var window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "Recaman's Sequence Render",
+        WindowStyle.Default, ctxSettings)
 window.verticalSyncEnabled = true
 
 # prevents flickering on startup

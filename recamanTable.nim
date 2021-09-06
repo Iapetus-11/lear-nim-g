@@ -21,7 +21,7 @@ when isMainModule:
     except IndexDefect:
         stdout.write("How many iterations? ")
         n = parseInt(readLine(stdin))
-        
+
     let startTime = getTime()
     let result = recamanTable(n)
     let duration = inMilliSeconds(getTime() - startTime).toBiggestFloat / 1000

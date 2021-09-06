@@ -2,12 +2,12 @@ import std/strutils
 
 
 proc distance(n: int): int =
-  var numstr: string
+    var numstr: string
 
-  for i in countup(1, n-1):
-    numstr &= $i
+    for i in countup(1, n-1):
+        numstr &= $i
 
-  return len(numstr)
+    return len(numstr)
 
 
 stdout.write("> ")

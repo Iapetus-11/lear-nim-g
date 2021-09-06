@@ -48,7 +48,7 @@ proc main() {.discardable.} =
         playersLabel = newLabel("Players: ")
         worldLabel = newLabel("World: ")
         gamemodeLabel = newLabel("Gamemode: ")
-    
+
     window.iconPath = "emerald.png"
     window.width = 400.scaleToDpi
     window.height = 175.scaleToDpi
@@ -59,7 +59,7 @@ proc main() {.discardable.} =
 
     horizon.add(checkStatusButton)
     horizon.add(serverAddressTextBox)
-    
+
     labelContainer.add(motdLabel)
     labelContainer.add(versionLabel)
     labelContainer.add(playersLabel)
@@ -77,7 +77,7 @@ proc main() {.discardable.} =
         elif serverSplit.len > 1:
             host = serverSplit[0]
             port = serverSplit[1].parseInt
-        
+
         try:
             let status = checkStatus(host, port)
 
