@@ -1,9 +1,9 @@
 type
-    Node[T] = ref object of RootObj
+    Node[T] = ref object
         value: T
         next: Node[T]
 
-    LinkedList[T] = ref object of RootObj
+    LinkedList[T] = ref object
         head: Node[T]
 
 iterator nodes[T](l: LinkedList[T]): Node[T] =

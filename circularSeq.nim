@@ -1,4 +1,4 @@
-type CircleSeq[T] = ref object of RootObj
+type CircleSeq[T] = ref object
     s: seq[T]
 
 proc `[]`[T](s: CircleSeq[T], i: int): T =
