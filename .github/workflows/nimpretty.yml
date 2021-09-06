@@ -3,7 +3,7 @@ name: Auto nimpretty
 on: [push]
 
 jobs:
-  autoblack:
+  autonimpretty:
 
     runs-on: ubuntu-latest
     steps:
