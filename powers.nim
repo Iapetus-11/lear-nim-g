@@ -1,5 +1,4 @@
-from strutils import parseFloat
-import math
+import std/[strutils, math]
 
 var number: float64 = parseFloat(readLine(stdin))
 

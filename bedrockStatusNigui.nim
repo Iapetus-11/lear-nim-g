@@ -1,6 +1,5 @@
-import strutils
+import std/[strutils, net]
 import nigui
-import net
 
 const REQUEST = "\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff\x00\xfe\xfe\xfe\xfe\xfd\xfd\xfd\xfd\x124Vx"
 const MAX_PACKET_SIZE = 65507

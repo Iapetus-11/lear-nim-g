@@ -1,6 +1,4 @@
-import algorithm
-import strutils
-import math
+import std/[algorithm, strutils, math]
 
 stdout.write("> ")
 let inp: string = readLine(stdin)

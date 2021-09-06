@@ -1,7 +1,5 @@
-import strformat
+import std/[strformat, math, sets]
 import csfml
-import math
-import sets
 
 const BACKGROUND_COLOR = color(30, 30, 40)
 const WINDOW_X = 1000

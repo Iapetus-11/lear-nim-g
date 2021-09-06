@@ -1,4 +1,4 @@
-import strutils
+import std/strutils
 
 stdout.write("How many numbers of the Fibonacci sequence to calculate? ")
 let n: int = strutils.parseInt(readLine(stdin))

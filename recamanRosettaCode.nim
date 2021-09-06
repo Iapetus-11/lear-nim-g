@@ -1,10 +1,10 @@
+# modified from the Nim example on https://rosettacode.org/wiki/Recaman%27s_sequence
+# this is slower than recaman.nim, but slightly faster than recamanTable.nim
+
 import sequtils, sets, strutils
 import times
 import strformat
 import os
-
-# modified from the Nim example on https://rosettacode.org/wiki/Recaman%27s_sequence
-# this is slower than recaman.nim, but slightly faster than recamanTable.nim
  
 iterator recaman(num: Positive = Natural.high): tuple[n, a: int; duplicate: bool] =
   var a = 0

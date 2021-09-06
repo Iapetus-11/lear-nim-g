@@ -1,5 +1,4 @@
-import strutils
-import tables
+import std/[strutils, tables]
 
 stdout.write("How many numbers of the Fibonacci sequence to calculate? ")
 let n: int = strutils.parseInt(readLine(stdin))

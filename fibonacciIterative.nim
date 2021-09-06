@@ -1,4 +1,4 @@
-import strutils
+import std/strutils
 import bigints
 
 proc fibonacci(n: int) = 

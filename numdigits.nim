@@ -1,4 +1,4 @@
-import strutils
+import std/strutils
 
 
 proc distance(n: int): int =

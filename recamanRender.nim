@@ -1,6 +1,5 @@
+import std/[sets, os]
 import csfml
-import sets
-import os
 
 const
     BACKGROUND_COLOR = color(30, 30, 40)

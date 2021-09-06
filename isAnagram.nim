@@ -1,4 +1,4 @@
-import sets
+import std/sets
 
 proc isAnagram(a: string, b: string): bool = 
     return a.len == b.len and difference(a.toHashSet, b.toHashSet).len == 0

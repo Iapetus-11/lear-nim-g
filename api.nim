@@ -1,5 +1,4 @@
-import httpclient
-import json
+import std/[httpclient, json]
 
 when isMainModule:
     stdout.write("Enter a Minecraft server: ")

@@ -1,8 +1,4 @@
-import strformat
-import strutils
-import times
-import sets
-import os
+import std/[strformat, strutils, times, sets, os]
 
 # Uses a seq (aka mutable list) and a HashSet, It's slightly
 # faster than recamanTable.nim but uses more memory I think

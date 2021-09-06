@@ -1,8 +1,4 @@
-import strformat
-import strutils
-import tables
-import times
-import os
+import std/[strformat, strutils, tables, times, os]
 
 # Slightly slower than recaman.nim (around 1.15x I think), but uses much less memory
 proc recamanTable(n: int): Table[int, int] =

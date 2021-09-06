@@ -1,4 +1,4 @@
-import strutils
+import std/strutils
 
 proc countCurrent(current: char, n: string): int =
     for c in n:

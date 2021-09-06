@@ -1,4 +1,4 @@
-import random; randomize()
+import std/random; randomize()
 import nigui; app.init()
 
 var

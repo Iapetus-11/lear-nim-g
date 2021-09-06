@@ -1,8 +1,5 @@
-import strformat
-import strutils
+import std/[strformat, strutils, times, os]
 import bigints
-import times
-import os
 
 # ported from code by u/ggrogg (credit to them)
 

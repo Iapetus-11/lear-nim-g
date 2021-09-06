@@ -1,4 +1,4 @@
-import strutils
+import std/strutils
 
 let a: string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 

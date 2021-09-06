@@ -1,7 +1,5 @@
-import strutils
+import std/[strutils, tables, hashes]
 import bigints
-import tables
-import hashes
 
 stdout.write("How many numbers of the Fibonacci sequence to calculate? ")
 let n: int = strutils.parseInt(readLine(stdin))

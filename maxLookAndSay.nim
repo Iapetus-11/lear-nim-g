@@ -1,7 +1,4 @@
-import strutils
-import sequtils
-import times
-import math
+import std/[strutils, sequtils, times, math]
 
 proc countCurrent(current: char, n: string): int =
     for c in n:

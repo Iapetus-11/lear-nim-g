@@ -1,6 +1,6 @@
-import random; randomize()
-import sequtils
-import times
+import std/[random, sequtils, times]
+
+randomize()
 
 const CHARS = "abcdefhijklmnopqrstuvwxyzABCDEFHIJKLMNOPQRSTUVWXYZ123456789&%$#@!+-=".toSeq
 

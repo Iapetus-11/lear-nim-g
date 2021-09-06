@@ -1,5 +1,5 @@
 import csfml
-import math
+import std/math
 
 const BACKGROUND_COLOR = color(30, 30, 40)
 const WINDOW_X = 800

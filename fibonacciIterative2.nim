@@ -1,6 +1,5 @@
-import strutils
+import std/[strutils, times]
 import bigints
-import times
 
 proc fibonacci(n: int): BigInt = 
     var
