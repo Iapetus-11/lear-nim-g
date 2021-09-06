@@ -1,0 +1,22 @@
+name: Auto nimpretty
+
+on: [push]
+
+jobs:
+  autoblack:
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+            ref: ${{ github.head_ref }}
+
+      - uses: actions/setup-nim-action@v1
+
+      - name: autonimpretty
+        run: |
+          for f in *.nim; do nimpretty --maxLineLen:100 --indent:4 ${f}; done;
+          git config --global user.name github-actions
+          git config --global user.email '${GITHUB_ACTOR}@users.noreply.github.com'
+          git commit -am "apply nimpretty"
+          git push
