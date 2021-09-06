@@ -10,7 +10,7 @@ type Vector2 = Vector2f or Vector2i
 var ctxSettings = ContextSettings()
 ctxSettings.antialiasingLevel = 16
 
-var window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "Peen", settings=ctxSettings)
+var window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "Peen", settings = ctxSettings)
 window.verticalSyncEnabled = true
 
 proc setActiveUnsafe(w: RenderWindow, active: bool): bool =
@@ -26,7 +26,8 @@ proc setActive(w: RenderWindow, active: bool) {.discardable.} =
 proc degToRad(degrees: float): float =
     return degrees * PI / 180
 
-proc drawArc(w: RenderWindow, origin: Vector2f, angle: float, rotation: float, radius: float, maxSides: int, color: Color) =
+proc drawArc(w: RenderWindow, origin: Vector2f, angle: float, rotation: float, radius: float,
+        maxSides: int, color: Color) =
     var vertices = newVertexArray(LineStrip, maxSides)
 
     for i in 0..maxSides-1:
@@ -58,7 +59,7 @@ proc drawInThread() {.thread, gcsafe.} =
     var
         origin = vec2(400, 300)
         skin = color(241, 194, 125)
-    
+
     window.drawArc(origin + vec2(0, -180), 180, 180, 30, 100, skin)
     window.drawLineStrip(origin + vec2(-30, -180), [vec2(0, 0), vec2(0, 180)], skin)
     window.drawLineStrip(origin + vec2(30, -180), [vec2(0, 0), vec2(0, 180)], skin)
@@ -69,7 +70,8 @@ proc drawInThread() {.thread, gcsafe.} =
     origin = vec2(200, 300)
 
     window.drawLineStrip(origin, [vec2(0, 0), vec2(0, 20), vec2(20, 20), vec2(20, 0), vec2(0, 0)], color)
-    window.drawLineStrip(origin + vec2(7, 7), [vec2(0, 0), vec2(0, 20), vec2(20, 20), vec2(20, 0), vec2(0, 0)], color)
+    window.drawLineStrip(origin + vec2(7, 7), [vec2(0, 0), vec2(0, 20), vec2(20, 20), vec2(20, 0),
+            vec2(0, 0)], color)
     window.drawLineStrip(origin, [vec2(0, 0), vec2(7, 7), vec2(27, 7), vec2(20, 0)], color)
     window.drawLineStrip(origin + vec2(0, 20), [vec2(0, 0), vec2(7, 7), vec2(27, 7), vec2(20, 0)], color)
 

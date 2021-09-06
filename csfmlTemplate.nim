@@ -7,7 +7,7 @@ const WINDOW_Y = 600
 var ctxSettings = ContextSettings()
 ctxSettings.antialiasingLevel = 16
 
-var window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "My Window", settings=ctxSettings)
+var window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "My Window", settings = ctxSettings)
 window.verticalSyncEnabled = true
 
 while window.open:

@@ -1,7 +1,7 @@
 import std/strutils
 import bigints
 
-proc fibonacci(n: int) = 
+proc fibonacci(n: int) =
     var
         i = initBigInt(1)
         j = initBigInt(0)
@@ -11,9 +11,9 @@ proc fibonacci(n: int) =
         let temp = i
         i = j
         j += temp
-        
+
         count += 1
-        
+
         echo "[", count, "]: ", j
 
 when isMainModule:

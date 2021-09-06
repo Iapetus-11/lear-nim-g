@@ -5,18 +5,18 @@ import sequtils, sets, strutils
 import times
 import strformat
 import os
- 
+
 iterator recaman(num: Positive = Natural.high): tuple[n, a: int; duplicate: bool] =
-  var a = 0
-  yield (0, a, false)
-  var known = [0].toHashSet
-  for n in 1..<num:
-    var next = a - n
-    if next <= 0 or next in known:
-      next = a + n
-    a = next
-    yield (n, a, a in known)
-    known.incl a
+    var a = 0
+    yield (0, a, false)
+    var known = [0].toHashSet
+    for n in 1..<num:
+        var next = a - n
+        if next <= 0 or next in known:
+            next = a + n
+        a = next
+        yield (n, a, a in known)
+        known.incl a
 
 var n: int
 

@@ -11,7 +11,7 @@ proc drawMaze(maze: Maze) =
 
         stdout.writeLine("")
 
-proc newMaze(sizeX: int, sizeY: int): Maze =  # blank spaces
+proc newMaze(sizeX: int, sizeY: int): Maze = # blank spaces
     for x in 0..sizeX-1:
         result.add(newSeq[char]())
         for y in 0..sizeY-1:
@@ -22,7 +22,7 @@ proc countSurroundingCells(maze: Maze, wall: tuple[x: int, y: int]): int =
 
     if maze[wall.y-1][wall.x] == 'c':
         result += 1
-    
+
     if maze[wall.y+1][wall.x] == 'c':
         result += 1
 
@@ -67,28 +67,28 @@ proc doMaze(sizeX: int, sizeY: int) =
             if maze[randomWall.y][randomWall.x-1] == 'u' and maze[randomWall.y-1][randomWall.x] == 'c':
                 addWall(randomWall)
                 walls.delete(walls.find(randomWall))
-            
+
             continue
 
         if randomWall.y != 0:
             if maze[randomWall.y-1][randomWall.x] == 'u' and maze[randomWall.y+1][randomWall.x+1] == 'c':
                 addWall(randomWall)
                 walls.delete(walls.find(randomWall))
-            
+
             continue
 
         if randomWall.y != maze.high:
             if maze[randomWall.y+1][randomWall.x] == 'u' and maze[randomWall.y-1][randomWall.x] == 'c':
                 addWall(randomWall)
                 walls.delete(walls.find(randomWall))
-            
+
             continue
 
         if randomWall.x != maze[0].high:
             if maze[randomWall.y][randomWall.x+1] == 'u' and maze[randomWall.y][randomWall.x-1] == 'c':
                 addWall(randomWall)
                 walls.delete(walls.find(randomWall))
-            
+
             continue
 
     for y in 0..sizeY-1:
@@ -105,6 +105,6 @@ proc doMaze(sizeX: int, sizeY: int) =
 
 
     drawMaze(maze)
-    
+
 
 doMaze(10, 30)

@@ -21,7 +21,7 @@ when isMainModule:
     let iterations = parseInt(readLine(stdin))
 
     var current = "1"
-    
+
     for i in 0..iterations:
         echo current
         current = lookAndSay(current)

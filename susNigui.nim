@@ -24,7 +24,7 @@ control.onDraw = proc (event: DrawEvent) =
 
         canvas.areaColor = rgb(0, 0, 0)
         canvas.fill()
-        
+
         case c:
         of "r":
             canvas.textColor = rgb(255, 0, 0)

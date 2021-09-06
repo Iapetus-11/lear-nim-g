@@ -55,7 +55,7 @@ proc `$`[T](l: LinkedList[T]): string =
     for node in nodes[T](l):
         result &= $node & ", "
         count += 1
-    
+
     if count > 0:
         result = result[0..result.high-2]
 
@@ -92,7 +92,7 @@ proc delete[T](l: LinkedList[T], index: int) =
 
 when isMainModule:
     import random; randomize()
-    
+
     var list = LinkedList[int](head: nil)
 
     for i in 0..20:

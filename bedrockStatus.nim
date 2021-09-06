@@ -25,7 +25,7 @@ proc main() {.discardable.} =
     discard sock.recvFrom(data, MAX_PACKET_SIZE, host, incomingPort)
 
     let dataSplit = data.split(';')
-    
+
     echo "motd           : ", dataSplit[1]
     echo "version        : ", dataSplit[3], " | Protocol ", dataSplit[2]
     echo "players online : ", dataSplit[4], "/", dataSplit[5]

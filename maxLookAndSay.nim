@@ -23,7 +23,7 @@ when isMainModule:
     var
         current = "1"
         start = getTime()
-    
+
     for i in 0..iterations:
         let duration = round(getTime().toUnixFloat - start.toUnixFloat, 1)
         echo "[i: ", i, ", ", duration, "s] ", current.toSeq.max

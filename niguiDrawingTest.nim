@@ -37,7 +37,7 @@ control.onDraw = proc (event: DrawEvent) =
         let point: tuple[x: int, y: int] = (rand(window.width - 50), rand(window.height - 50))
         canvas.drawEllipseArea(point.x - 5, point.y - 5, 10, 10)
         points.add(point)
-        
+
     for p1 in points:
         for p2 in points:
             canvas.drawLine(p1.x, p1.y, p2.x, p2.y)

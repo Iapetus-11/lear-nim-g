@@ -1,7 +1,7 @@
 import std/[strutils, times]
 import bigints
 
-proc fibonacci(n: int): BigInt = 
+proc fibonacci(n: int): BigInt =
     var
         i = initBigInt(1)
         j = initBigInt(0)
@@ -10,7 +10,7 @@ proc fibonacci(n: int): BigInt =
         let temp = i
         i = j
         j += temp
-        
+
     return j
 
 when isMainModule:
