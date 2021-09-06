@@ -16,7 +16,7 @@ jobs:
       - name: autonimpretty
         continue-on-error: true
         run: |
-          for f in *.nim; do nimpretty --maxLineLen:100 --indent:4 ${f}; done;
+          for f in $(find ./ -name '*.nim'); do nimpretty --maxLineLen:100 --indent:4 $f; done;
           git config --global user.name github-actions
           git config --global user.email '${GITHUB_ACTOR}@users.noreply.github.com'
           git commit -am "nimpretty"
