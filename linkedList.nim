@@ -73,6 +73,8 @@ proc add[T](l: LinkedList[T], value: T) =
 
         last.next = newNode
 
+# delete() keeps the structure of the linked list, and
+# "deletes in-place", keeping the nodes after the deleted node
 proc delete[T](l: LinkedList[T], index: int) =
     if 0 > index or index > l.len:
         raise newException(IndexDefect, "Invalid index")
