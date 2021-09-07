@@ -46,7 +46,7 @@ proc drawStonk(w: RenderWindow, d: seq[float], m: float, c: tuple[x1: int, x2: i
             color(20, 255, 255)
         )
 
-        var t = newText(&"{i+1}", f, 10)
+        var t = newText(&"{o + i + 1}", f, 10)
         t.position = vec2(xC, cfloat(c.y2) + 2)
         w.draw(t)
 
@@ -110,18 +110,18 @@ while window.open:
 
     window.clear(BACKGROUND_COLOR)
     window.drawStonk(stockPrices, stockPricesMax, (20, int(WINDOW_X) - 20, 20, int(WINDOW_Y / 2) -
-            20), fontRobotoBlack)
+            20), fontRobotoBlack, 0)
 
     let mPos = window.mouse_getPosition
 
     if mPos.x <= 5 or mPos.x >= WINDOW_X - 5:
         window.drawStonk(stockPrices, stockPricesMax, (20, int(WINDOW_X) - 20, int(WINDOW_Y / 2) +
-                20, int(WINDOW_Y) - 20), fontRobotoBlack)
+                20, int(WINDOW_Y) - 20), fontRobotoBlack, 0)
     else:
         r = max(int(mPos.x-15), 0)..min(int(mPos.x)+14, WINDOW_X)
         rOuter = max(int(mPos.x)-119, 0)..min(int(mPos.x)+120, WINDOW_X)
         window.drawStonk(stockPrices[r], stockPrices[rOuter].smoothedMax, (20, int(WINDOW_X) - 20,
-                int(WINDOW_Y / 2) + 20, int(WINDOW_Y) - 20), fontRobotoBlack)
+                int(WINDOW_Y / 2) + 20, int(WINDOW_Y) - 20), fontRobotoBlack, r.a)
 
     window.display()
 
