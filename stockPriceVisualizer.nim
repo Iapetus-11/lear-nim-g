@@ -84,7 +84,7 @@ let
         for fNode in fields:
             var pF: float
 
-            try:  # dataset do be kinda shit tho
+            try: # dataset do be kinda shit tho
                 pf = fNode.getFloat(fields[i-1].getFloat(fields[i-2].getFloat(fields[i-3].getFloat(-1.0))))
             except IndexDefect:
                 pf = -1.0
@@ -138,7 +138,8 @@ while window.open:
         r = max(int(mPos.x-15), 0)..min(int(mPos.x)+14, WINDOW_X)
         rOuter = max(int(mPos.x)-119, 0)..min(int(mPos.x)+120, WINDOW_X)
         window.drawStonk(stockPrices[r], stockPrices[rOuter].smoothedMax, (20, int(WINDOW_X) - 20,
-                int(WINDOW_Y / 2) + 20, int(WINDOW_Y) - 20), fontRobotoBlack, r.a, true, stockPrices[r].max)
+                int(WINDOW_Y / 2) + 20, int(WINDOW_Y) - 20), fontRobotoBlack, r.a, true,
+                        stockPrices[r].max)
 
     window.display()
 
