@@ -3,7 +3,7 @@ import csfml
 
 const
     BACKGROUND_COLOR = color(30, 30, 40)
-    WINDOW_X: cint = 1080
+    WINDOW_X: cint = 1280
     WINDOW_Y: cint = 796
 
 iterator enumerate[T](s: seq[T]): tuple[i: int, v: T] =
@@ -48,7 +48,7 @@ proc drawStonk(w: RenderWindow, d: seq[float], m: float, c: tuple[x1: int, x2: i
         )
 
         if dT:
-            var t = newText(&"{o + i + 1}", f, 10)
+            var t = newText(&"{o + i + 1}", f, 12)
             t.position = vec2(xC, cfloat(c.y2) + 2)
             w.draw(t)
             t.destroy()
@@ -129,17 +129,19 @@ while window.open:
     window.drawStonk(stockPrices, stockPricesMax, (20, int(WINDOW_X) - 20, 20, int(WINDOW_Y / 2) -
             20), fontRobotoBlack, 0, false, stockPricesMax)
 
-    let mPos = window.mouse_getPosition
+    let
+        mPos = window.mouse_getPosition
+        mPosAX = int(float(stockPricesLen) / float(WINDOW_X) * float(mPos.x))
 
-    if mPos.x <= 5 or mPos.x >= WINDOW_X - 5:
-        window.drawStonk(stockPrices, stockPricesMax, (20, int(WINDOW_X) - 20, int(WINDOW_Y / 2) +
-                20, int(WINDOW_Y) - 20), fontRobotoBlack, 0, false, stockPricesMax)
-    else:
-        r = max(int(mPos.x-15), 0)..min(int(mPos.x)+14, WINDOW_X)
-        rOuter = max(int(mPos.x)-119, 0)..min(int(mPos.x)+120, WINDOW_X)
+    try:
+        r = max(mPosAX-15, 0)..min(mPosAX+14, stockPricesLen)
+        rOuter = max(mPosAX-119, 0)..min(mPosAX+120, stockPricesLen)
         window.drawStonk(stockPrices[r], stockPrices[rOuter].smoothedMax, (20, int(WINDOW_X) - 20,
                 int(WINDOW_Y / 2) + 20, int(WINDOW_Y) - 20), fontRobotoBlack, r.a, true,
                         stockPrices[r].max)
+    except RangeDefect, IndexDefect:
+        window.drawStonk(stockPrices, stockPricesMax, (20, int(WINDOW_X) - 20, int(WINDOW_Y / 2) +
+                20, int(WINDOW_Y) - 20), fontRobotoBlack, 0, false, stockPricesMax)
 
     window.display()
 
