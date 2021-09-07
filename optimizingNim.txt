@@ -1,1 +1,2 @@
 nim compile -d:danger --opt:speed|size
+You can also change the gc, https://nim-lang.org/docs/gc.html
