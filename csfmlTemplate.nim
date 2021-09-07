@@ -1,8 +1,9 @@
 import csfml
 
-const BACKGROUND_COLOR = color(30, 30, 40)
-const WINDOW_X = 800
-const WINDOW_Y = 600
+const
+    BACKGROUND_COLOR = color(30, 30, 40)
+    WINDOW_X: cint = 800
+    WINDOW_Y: cint = 600
 
 let
     ctxSettings = ContextSettings(antialiasingLevel: 16)
