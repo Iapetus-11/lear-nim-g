@@ -54,7 +54,7 @@ let
 
         var
             result = newSeq[float]()
-            started = false  # should be false in prod
+            started = false # should be false in prod
 
         for p in fields.values:
             let pf = p.getFloat()
@@ -99,12 +99,14 @@ while window.open:
     let mPos = window.mouse_getPosition
 
     if mPos.x <= 10 or mPos.x >= WINDOW_X - 10:
-        window.drawStonk(stockPrices, stockPricesMax, (20, int(WINDOW_X) - 20, int(WINDOW_Y / 2) + 20, int(WINDOW_Y) - 20))
+        window.drawStonk(stockPrices, stockPricesMax, (20, int(WINDOW_X) - 20, int(WINDOW_Y / 2) +
+                20, int(WINDOW_Y) - 20))
     else:
         r = max(int(mPos.x-15), 0)..min(int(mPos.x)+14, WINDOW_X)
         rOuter = max(int(mPos.x)-119, 0)..min(int(mPos.x)+120, WINDOW_X)
-        window.drawStonk(stockPrices[r], stockPrices[rOuter].smoothedMax, (20, int(WINDOW_X) - 20, int(WINDOW_Y / 2) + 20, int(WINDOW_Y) - 20))
-    
+        window.drawStonk(stockPrices[r], stockPrices[rOuter].smoothedMax, (20, int(WINDOW_X) - 20,
+                int(WINDOW_Y / 2) + 20, int(WINDOW_Y) - 20))
+
     window.display()
 
 window.destroy()
