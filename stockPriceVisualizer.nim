@@ -9,11 +9,30 @@ const
 proc isNan(n: float): bool =
     return not (n > 0 or n < 0 or n == 0)
 
+proc drawStonk(w: RenderWindow, d: seq[float], m: float, y1: int, y2: int) =
+    let
+        l = d.len
+        m = d.max
+        widthAdjust = float(WINDOW_X) / float(l)
+        heightAdjust = float(y2) / m
+
+    var
+        vertices = newVertexArray(PrimitiveType.LineStrip, l)
+
+    for i in 0..l-1:
+        vertices[i] = vertex(
+            vec2(float(i) * widthAdjust, float(WINDOW_Y) - (float(y1) + d[i] * heightAdjust)),
+            color(10, 115, 255)
+        )
+
+    w.draw(vertices)
+    vertices.destroy()
+
 let
     stock = paramStr(1).toUpperAscii()
     stockPrices = block:
         let
-            data = parseJson(readFile(&"dump/{stock.toUpperAscii()}.json"))
+            data = parseJson(readFile(&"dump/{stock}.json"))
             fields = data.getFields()
 
         var
@@ -30,13 +49,14 @@ let
                 result.add(pf)
 
         result
-    ctxSettings = ContextSettings(antialiasingLevel: 16)
-    window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "My Window", settings = ctxSettings)
-
-window.verticalSyncEnabled = true
+    stockPricesMax = stockPrices.max
 
 var
+    ctxSettings = ContextSettings(antialiasingLevel: 16)
+    window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), &"Stock Price Visualization [{stock}]", WindowStyle.Default, ctxSettings)
     event: Event
+
+window.verticalSyncEnabled = true
 
 while window.open:
     if window.pollEvent(event):
@@ -48,11 +68,10 @@ while window.open:
             if event.key.code == KeyCode.Escape:
                 window.close()
                 break
-            else:
-                echo event.key.code
         else: discard
 
     window.clear(BACKGROUND_COLOR)
+    window.drawStonk(stockPrices, stockPricesMax, 10, 200)
     window.display()
 
 window.destroy()
