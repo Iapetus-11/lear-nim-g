@@ -8,7 +8,8 @@ const
 
 var
     ctxSettings = ContextSettings(antialiasingLevel: 16)
-    window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "Stock Price Visualizer", settings = ctxSettings)
+    window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "Stock Price Visualizer",
+            settings = ctxSettings)
     stock = paramStr(1)
     stockData = parseJson(readFile(fmt"dump/{stock.toUpperAscii()}.json"))
     stockValues = block:
