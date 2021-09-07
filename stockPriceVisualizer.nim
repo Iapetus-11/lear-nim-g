@@ -3,8 +3,8 @@ import csfml
 
 const
     BACKGROUND_COLOR = color(30, 30, 40)
-    WINDOW_X: cint = 800
-    WINDOW_Y: cint = 600
+    WINDOW_X: cint = 1080
+    WINDOW_Y: cint = 796
 
 iterator enumerate[T](s: seq[T]): tuple[i: int, v: T] =
     var i = 0
@@ -28,11 +28,12 @@ proc smoothedMax(s: seq[float]): float =
     result /= float(s.len)
 
 proc drawStonk(w: RenderWindow, d: seq[float], m: float, c: tuple[x1: int, x2: int, y1: int,
-        y2: int], f: Font, o: int) =
+        y2: int], f: Font, o: int, dT: bool, aM: float) =
     let
         l = d.len
+        h = float(c.y2 - c.y1)
         widthAdjust = float(c.x2 - c.x1) / float(l)
-        heightAdjust = float(c.y2 - c.y1) / m
+        heightAdjust = h / m
 
     var vertices = newVertexArray(PrimitiveType.LineStrip, l)
 
@@ -41,15 +42,25 @@ proc drawStonk(w: RenderWindow, d: seq[float], m: float, c: tuple[x1: int, x2: i
         vertices[i] = vertex(
             vec2(
                 xC,
-                float(c.y2 - c.y1) - d[i] * heightAdjust + float(c.y1)
+                h - d[i] * heightAdjust + float(c.y1)
             ),
             color(20, 255, 255)
         )
 
-        var t = newText(&"{o + i + 1}", f, 10)
-        t.position = vec2(xC, cfloat(c.y2) + 2)
+        if dT:
+            var t = newText(&"{o + i + 1}", f, 10)
+            t.position = vec2(xC, cfloat(c.y2) + 2)
+            w.draw(t)
+            t.destroy()
+
+    let yTO = h/10.0
+
+    for i in 0..9:
+        var t = newText(&"{aM/10.0 * (10.0-i.float):.2f}", f, 10)
+        t.position = vec2(cfloat(c.x1-18), cfloat(c.y1) + float(i) * yTO)
         w.draw(t)
         t.destroy()
+
 
     w.draw(vertices)
     vertices.destroy()
@@ -71,7 +82,12 @@ let
             i = 0
 
         for fNode in fields:
-            let pf = fNode.getFloat(if i > 0: fields[i-1].getFloat(-1.0) else: -1.0)
+            var pF: float
+
+            try:  # dataset do be kinda shit tho
+                pf = fNode.getFloat(fields[i-1].getFloat(fields[i-2].getFloat(fields[i-3].getFloat(-1.0))))
+            except IndexDefect:
+                pf = -1.0
 
             if isNan(pf) or pf <= 0.0:
                 if started:
@@ -111,18 +127,18 @@ while window.open:
 
     window.clear(BACKGROUND_COLOR)
     window.drawStonk(stockPrices, stockPricesMax, (20, int(WINDOW_X) - 20, 20, int(WINDOW_Y / 2) -
-            20), fontRobotoBlack, 0)
+            20), fontRobotoBlack, 0, false, stockPricesMax)
 
     let mPos = window.mouse_getPosition
 
     if mPos.x <= 5 or mPos.x >= WINDOW_X - 5:
         window.drawStonk(stockPrices, stockPricesMax, (20, int(WINDOW_X) - 20, int(WINDOW_Y / 2) +
-                20, int(WINDOW_Y) - 20), fontRobotoBlack, 0)
+                20, int(WINDOW_Y) - 20), fontRobotoBlack, 0, false, stockPricesMax)
     else:
         r = max(int(mPos.x-15), 0)..min(int(mPos.x)+14, WINDOW_X)
         rOuter = max(int(mPos.x)-119, 0)..min(int(mPos.x)+120, WINDOW_X)
         window.drawStonk(stockPrices[r], stockPrices[rOuter].smoothedMax, (20, int(WINDOW_X) - 20,
-                int(WINDOW_Y / 2) + 20, int(WINDOW_Y) - 20), fontRobotoBlack, r.a)
+                int(WINDOW_Y / 2) + 20, int(WINDOW_Y) - 20), fontRobotoBlack, r.a, true, stockPrices[r].max)
 
     window.display()
 
