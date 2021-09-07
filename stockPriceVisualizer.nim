@@ -75,9 +75,8 @@ var
     window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), &"Stock Price Visualization [{stock}]",
             WindowStyle.Default, ctxSettings)
     event: Event
-    rDefault = 0..stockPricesLen-1
-    r = rDefault
-    rOuter = rDefault
+    r = 0..stockPricesLen-1
+    rOuter = 0..stockPricesLen-1
 
 window.verticalSyncEnabled = true
 
