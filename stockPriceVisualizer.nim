@@ -49,6 +49,7 @@ proc drawStonk(w: RenderWindow, d: seq[float], m: float, c: tuple[x1: int, x2: i
         var t = newText(&"{o + i + 1}", f, 10)
         t.position = vec2(xC, cfloat(c.y2) + 2)
         w.draw(t)
+        t.destroy()
 
     w.draw(vertices)
     vertices.destroy()
@@ -125,4 +126,5 @@ while window.open:
 
     window.display()
 
+fontRobotoBlack.destroy()
 window.destroy()
