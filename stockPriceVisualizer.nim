@@ -53,7 +53,8 @@ let
 
 var
     ctxSettings = ContextSettings(antialiasingLevel: 16)
-    window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), &"Stock Price Visualization [{stock}]", WindowStyle.Default, ctxSettings)
+    window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), &"Stock Price Visualization [{stock}]",
+            WindowStyle.Default, ctxSettings)
     event: Event
 
 window.verticalSyncEnabled = true
