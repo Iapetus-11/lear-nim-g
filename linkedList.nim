@@ -91,7 +91,8 @@ proc delete[T](l: LinkedList[T], index: int) =
         l.nodeAt(index-1).next = l.nodeAt(index+1)
 
 when isMainModule:
-    import random; randomize()
+    import random
+    randomize()
 
     var list = LinkedList[int](head: nil)
 
