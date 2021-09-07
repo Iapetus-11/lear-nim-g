@@ -27,7 +27,8 @@ proc smoothedMax(s: seq[float]): float =
 
     result /= float(s.len)
 
-proc drawStonk(w: RenderWindow, d: seq[float], m: float, c: tuple[x1: int, x2: int, y1: int, y2: int], f: Font, o: int) =
+proc drawStonk(w: RenderWindow, d: seq[float], m: float, c: tuple[x1: int, x2: int, y1: int,
+        y2: int], f: Font, o: int) =
     let
         l = d.len
         widthAdjust = float(c.x2 - c.x1) / float(l)
@@ -44,7 +45,7 @@ proc drawStonk(w: RenderWindow, d: seq[float], m: float, c: tuple[x1: int, x2: i
             ),
             color(20, 255, 255)
         )
-        
+
         var t = newText(&"{i+1}", f, 10)
         t.position = vec2(xC, cfloat(c.y2) + 2)
         w.draw(t)
@@ -65,7 +66,7 @@ let
 
         var
             result = newSeq[float]()
-            started = false  # should be false in prod
+            started = false # should be false in prod
             i = 0
 
         for fNode in fields:
@@ -108,17 +109,20 @@ while window.open:
         else: discard
 
     window.clear(BACKGROUND_COLOR)
-    window.drawStonk(stockPrices, stockPricesMax, (20, int(WINDOW_X) - 20, 20, int(WINDOW_Y / 2) - 20), fontRobotoBlack)
+    window.drawStonk(stockPrices, stockPricesMax, (20, int(WINDOW_X) - 20, 20, int(WINDOW_Y / 2) -
+            20), fontRobotoBlack)
 
     let mPos = window.mouse_getPosition
 
     if mPos.x <= 5 or mPos.x >= WINDOW_X - 5:
-        window.drawStonk(stockPrices, stockPricesMax, (20, int(WINDOW_X) - 20, int(WINDOW_Y / 2) + 20, int(WINDOW_Y) - 20), fontRobotoBlack)
+        window.drawStonk(stockPrices, stockPricesMax, (20, int(WINDOW_X) - 20, int(WINDOW_Y / 2) +
+                20, int(WINDOW_Y) - 20), fontRobotoBlack)
     else:
         r = max(int(mPos.x-15), 0)..min(int(mPos.x)+14, WINDOW_X)
         rOuter = max(int(mPos.x)-119, 0)..min(int(mPos.x)+120, WINDOW_X)
-        window.drawStonk(stockPrices[r], stockPrices[rOuter].smoothedMax, (20, int(WINDOW_X) - 20, int(WINDOW_Y / 2) + 20, int(WINDOW_Y) - 20), fontRobotoBlack)
-    
+        window.drawStonk(stockPrices[r], stockPrices[rOuter].smoothedMax, (20, int(WINDOW_X) - 20,
+                int(WINDOW_Y / 2) + 20, int(WINDOW_Y) - 20), fontRobotoBlack)
+
     window.display()
 
 window.destroy()
