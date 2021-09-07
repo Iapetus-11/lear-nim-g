@@ -45,8 +45,7 @@ proc `[]=`[T](l: LinkedList[T], index: int, value: T) =
 
         i += 1
 
-proc `$`[T](n: Node[T]): string =
-    return "Node<" & repr(n.value) & ">"
+proc `$`[T](n: Node[T]): string = repr(n.value)
 
 proc `$`[T](l: LinkedList[T]): string =
     result = "LinkedList(["
@@ -108,4 +107,8 @@ when isMainModule:
     echo list
 
     list.delete(list.high)
+    echo list
+
+    list[0] = 2
+    list[3] = 3
     echo list
