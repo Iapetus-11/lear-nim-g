@@ -7,7 +7,7 @@ setMaxPoolSize(7)
 var
     allStockData = %*{}
     i = 0
-    files = toSeq(walkDir("dump", relative=true))
+    files = toSeq(walkDir("dump", relative = true))
     filesLen = files.len
     responses = newSeq[FlowVar[tuple[f: string, j: JsonNode]]]()
 
@@ -18,7 +18,7 @@ echo "Loading individual files..."
 
 for file in files:
     stdout.write(&"{i+1}/{filesLen}\r")
-    
+
     responses.add(spawn loadStockData(file.path))
 
     # keeps memory not crazyy
@@ -30,7 +30,7 @@ for file in files:
             allStockData[r.f] = r.j
 
         responses.setLen(0)
-    
+
     i += 1
 
 

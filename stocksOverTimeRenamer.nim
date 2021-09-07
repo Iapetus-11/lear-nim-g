@@ -6,7 +6,7 @@ setMaxPoolSize(7)
 
 var
     i = 0
-    files = toSeq(walkDir("dump", relative=true))
+    files = toSeq(walkDir("dump", relative = true))
     filesLen = files.len
 
 proc renameStonkFile(filePath: string) =
@@ -16,7 +16,7 @@ echo "Loading individual files..."
 
 for file in files:
     stdout.write(&"{i+1}/{filesLen}\r")
-    
+
     if "-history.json" in file.path:
         spawn renameStonkFile(file.path)
 
