@@ -28,4 +28,7 @@ while window.open:
                 echo event.key.code
         else: discard
 
+    window.clear(BACKGROUND_COLOR)
+    window.display()
+
 window.destroy()
