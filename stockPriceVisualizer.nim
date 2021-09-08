@@ -66,10 +66,10 @@ proc drawStonk(w: RenderWindow, d: seq[float], m: float, c: tuple[x1: int, x2: i
     vertices.destroy()
 
 let
-    stock = paramStr(1).toUpperAscii()
+    stock = paramStr(1)
     stockPrices = block:
         let
-            data = parseJson(readFile(&"dump/{stock}.json"))
+            data = parseJson(readFile(stock))
             fields = block:
                 var result: seq[JsonNode]
                 for f in data.getFields().values:
