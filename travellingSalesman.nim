@@ -23,9 +23,11 @@ proc genPoints(n: int, padding: int): seq[Point] =
     result = newSeq[Point](n)
 
     for i in 0..n-1:
-        result[i] = Point(x: padding + rand(WINDOW_X - padding * 2), y: padding + rand(WINDOW_Y - padding * 2))
+        result[i] = Point(x: padding + rand(WINDOW_X - padding * 2), y: padding + rand(WINDOW_Y -
+                padding * 2))
 
-proc drawPoints(window: RenderWindow, points: seq[Point], color: Color, radius: float, pointsPerCircle: int) =
+proc drawPoints(window: RenderWindow, points: seq[Point], color: Color, radius: float,
+        pointsPerCircle: int) =
     for p in points:
         let c = newCircleShape(radius, pointsPerCircle)
 
@@ -41,7 +43,8 @@ proc solveBruteForceBlocking(window: RenderWindow, points: seq[Point]) =
 
 let
     ctxSettings = ContextSettings(antialiasingLevel: 16)
-    window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "Travelling Salesman (Ants)", settings = ctxSettings)
+    window = newRenderWindow(videoMode(WINDOW_X, WINDOW_Y), "Travelling Salesman (Ants)",
+            settings = ctxSettings)
 
 window.verticalSyncEnabled = true
 
