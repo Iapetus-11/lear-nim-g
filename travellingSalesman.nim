@@ -64,13 +64,14 @@ var
     event: Event
     points = genPoints(6, 50)
 
-proc drawLinesIncr(window: RenderWindow, lines: seq[array[2, Point]], color: Color, start: int, delayMs: int) =
+proc drawLinesIncr(window: RenderWindow, lines: seq[array[2, Point]], color: Color, start: int,
+        delayMs: int) =
     for i in 0..lines.high:
         window.clear(BACKGROUND_COLOR)
 
         for j in 0..i:
             window.drawLine(lines[j][0], lines[j][1], color)
-        
+
         window.drawPoints(points, color(255, 30, 50), 4.0, 10)
         window.display()
         sleep(milliseconds(delayMs.int32))
@@ -78,7 +79,7 @@ proc drawLinesIncr(window: RenderWindow, lines: seq[array[2, Point]], color: Col
 proc getPaths(window: RenderWindow) =
     var
         paths = initHashSet[seq[Point]](points.len)
-    
+
 
 while window.open:
     if window.pollEvent(event):
