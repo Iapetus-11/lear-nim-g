@@ -1,7 +1,7 @@
 # Travelling Salesman Problem with ant colony optimization
 # inspired by Sebastian Lague - https://www.youtube.com/watch?v=X-iSQQgOd1A
 
-import std/[random, math, algorithm]
+import std/[random, math, algorithm, sets, hashes]
 import csfml
 
 randomize()
@@ -52,44 +52,6 @@ proc drawLine(window: RenderWindow, a: Point, b: Point, color: Color) =
     window.draw(vertices)
     vertices.destroy()
 
-proc drawLinesIncr(window: RenderWindow, lines: seq[array[2, Point]], color: Color, delayMs: int) =
-    for i in 0..lines.high:
-        if i != 0:
-            sleep(milliseconds(delayMs.int32))
-
-        window.drawLine(lines[i][0], lines[i][1], color)
-        window.display()
-
-proc getOptimalPath(window: RenderWindow, points: seq[Point]): seq[Point] =
-    if points.len == 0:
-        return
-
-    let start = points[0]
-    var
-        lowestDistance = distance(start, points[1])
-        nearestPoint = points[1]
-        nearestPointIdx = 1
-
-    for i in 2..points.high:
-        let d = distance(start, points[i])
-
-        if lowestDistance > d:
-            lowestDistance = d
-            nearestPoint = points[i]
-            nearestPointIdx = i
-
-    result.add(start)
-    result.add(nearestPoint)
-
-    var newPoints = points
-    newPoints.del(nearestPointIdx)
-    newPoints.insert(nearestPoint, 0)
-
-    for p in getOptimalPath(window, newPoints):
-        result.add(p)
-
-
-
 
 let
     ctxSettings = ContextSettings(antialiasingLevel: 16)
@@ -101,6 +63,22 @@ window.verticalSyncEnabled = true
 var
     event: Event
     points = genPoints(6, 50)
+
+proc drawLinesIncr(window: RenderWindow, lines: seq[array[2, Point]], color: Color, start: int, delayMs: int) =
+    for i in 0..lines.high:
+        window.clear(BACKGROUND_COLOR)
+
+        for j in 0..i:
+            window.drawLine(lines[j][0], lines[j][1], color)
+        
+        window.drawPoints(points, color(255, 30, 50), 4.0, 10)
+        window.display()
+        sleep(milliseconds(delayMs.int32))
+
+proc getPaths(window: RenderWindow) =
+    var
+        paths = initHashSet[seq[Point]](points.len)
+    
 
 while window.open:
     if window.pollEvent(event):
@@ -120,7 +98,7 @@ while window.open:
 
     window.clear(BACKGROUND_COLOR)
     window.drawPoints(points, color(255, 30, 50), 4.0, 10)
-    window.getPaths(points)
+    discard window.getPaths()
 
     window.display()
 
