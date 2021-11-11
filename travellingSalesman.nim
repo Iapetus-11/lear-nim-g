@@ -45,7 +45,7 @@ proc drawPoints(window: RenderWindow, points: seq[Point], color: Color, radius: 
 
 proc drawLine(window: RenderWindow, a: Point, b: Point, color: Color) =
     let vertices = newVertexArray(Lines, 2)
-    
+
     vertices.append(vertex(vec2(a), color))
     vertices.append(vertex(vec2(b), color))
 
@@ -87,7 +87,7 @@ proc getOptimalPath(window: RenderWindow, points: seq[Point]): seq[Point] =
 
     for p in getOptimalPath(window, newPoints):
         result.add(p)
-    
+
 
 
 
