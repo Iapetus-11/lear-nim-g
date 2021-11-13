@@ -70,7 +70,8 @@ proc drawPath(window: RenderWindow, path: seq[Point], allPoints: seq[Point]) =
 
 var urMom = initHashSet[Point]()
 
-proc getPaths(window: RenderWindow, allPoints: seq[Point], points: seq[Point], exclude: var HashSet[Point] = urMom): seq[seq[Point]] =
+proc getPaths(window: RenderWindow, allPoints: seq[Point], points: seq[Point], exclude: var HashSet[
+        Point] = urMom): seq[seq[Point]] =
     let start = points[0]
     exclude.incl(start)
 
@@ -81,7 +82,7 @@ proc getPaths(window: RenderWindow, allPoints: seq[Point], points: seq[Point], e
         tempPoints.del(0)
 
         tempPoints.insert(points[i], 0)
-        
+
         var newPaths = getPaths(window, allPoints, tempPoints, exclude)
 
         echo newPaths
