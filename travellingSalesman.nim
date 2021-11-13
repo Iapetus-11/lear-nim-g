@@ -22,6 +22,9 @@ proc distance(a: Point, b: Point): float =
 proc `$`(point: Point): string =
     return '(' & $point.x & ',' & $point.y & ')'
 
+proc hash(point: Point): Hash =
+    return hash($point)
+
 proc vec2(point: Point): Vector2i =
     return vec2(point.x, point.y)
 
@@ -52,6 +55,44 @@ proc drawLine(window: RenderWindow, a: Point, b: Point, color: Color) =
     window.draw(vertices)
     vertices.destroy()
 
+proc drawPath(window: RenderWindow, path: seq[Point], allPoints: seq[Point]) =
+    var vertices = newVertexArray(LineStrip)
+
+    echo path
+
+    for p in path:
+        vertices.append(vertex(vec2(p), color(255, 30, 50)))
+        window.clear(BACKGROUND_COLOR)
+        window.drawPoints(allPoints, color(255, 30, 50), 4.0, 10)
+        window.draw(vertices)
+        window.display()
+        sleep(milliseconds(200))
+
+var urMom = initHashSet[Point]()
+
+proc getPaths(window: RenderWindow, allPoints: seq[Point], points: seq[Point], exclude: var HashSet[Point] = urMom): seq[seq[Point]] =
+    let start = points[0]
+    exclude.incl(start)
+
+    for i in 1..points.high:
+        var tempPoints: seq[Point]
+        tempPoints = points
+        tempPoints.del(i)
+        tempPoints.del(0)
+
+        tempPoints.insert(points[i], 0)
+        
+        var newPaths = getPaths(window, allPoints, tempPoints, exclude)
+
+        echo newPaths
+
+        for path in newPaths:
+            echo "hi"
+            result.add(@[start] & path)
+            window.drawPath(result[result.high], allPoints)
+
+    return result
+
 
 let
     ctxSettings = ContextSettings(antialiasingLevel: 16)
@@ -76,10 +117,6 @@ proc drawLinesIncr(window: RenderWindow, lines: seq[array[2, Point]], color: Col
         window.display()
         sleep(milliseconds(delayMs.int32))
 
-proc getPaths(window: RenderWindow) =
-    var
-        paths = initHashSet[seq[Point]](points.len)
-
 
 while window.open:
     if window.pollEvent(event):
@@ -99,7 +136,7 @@ while window.open:
 
     window.clear(BACKGROUND_COLOR)
     window.drawPoints(points, color(255, 30, 50), 4.0, 10)
-    discard window.getPaths()
+    discard getPaths(window, points, points)
 
     window.display()
 
