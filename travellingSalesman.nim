@@ -1,7 +1,7 @@
 # Travelling Salesman Problem with ant colony optimization
 # inspired by Sebastian Lague - https://www.youtube.com/watch?v=X-iSQQgOd1A
 
-import std/[random, math, algorithm, sets, hashes]
+import std/[random, math, strutils, sets, hashes, algorithm]
 import csfml
 
 randomize()
@@ -55,41 +55,55 @@ proc drawLine(window: RenderWindow, a: Point, b: Point, color: Color) =
     window.draw(vertices)
     vertices.destroy()
 
+proc `$`(vertexArray: VertexArray): string =
+    let count = vertexArray.vertexCount
+    var vertices = newSeq[Vertex](count)
+
+    for i in 0..count-1:
+        vertices.add(vertexArray[i])
+
+    return "VertexArray<" & $vertexArray.primitiveType & ">[" & vertices.join(", ") & "]"
+
+
 proc drawPath(window: RenderWindow, path: seq[Point], allPoints: seq[Point]) =
-    var vertices = newVertexArray(LineStrip)
+    var vertices = newVertexArray(LineStrip, 0)
 
-    echo path
-
-    for p in path:
+    for i, p in path.pairs:
+        vertices.resize(i+1)
         vertices.append(vertex(vec2(p), color(255, 30, 50)))
+        echo vertices
+        
         window.clear(BACKGROUND_COLOR)
         window.drawPoints(allPoints, color(255, 30, 50), 4.0, 10)
         window.draw(vertices)
+        vertices.destroy()
         window.display()
         sleep(milliseconds(200))
 
-var urMom = initHashSet[Point]()
+var exclude = initHashSet[Point]()
 
-proc getPaths(window: RenderWindow, allPoints: seq[Point], points: seq[Point], exclude: var HashSet[Point] = urMom): seq[seq[Point]] =
+proc getPaths(window: RenderWindow, allPoints: seq[Point], points: seq[Point]): seq[seq[Point]] =
+    if points.len == 0:
+        exclude.clear()
+        return
+
     let start = points[0]
     exclude.incl(start)
 
     for i in 1..points.high:
-        var tempPoints: seq[Point]
-        tempPoints = points
-        tempPoints.del(i)
-        tempPoints.del(0)
+        if points[i] in exclude:
+            continue
 
-        tempPoints.insert(points[i], 0)
+        var newPoints = points
+        newPoints.delete(newPoints.binarySearch(start))
+        newPoints.delete(newPoints.binarySearch(points[i]))
+        newPoints.insert(points[i], 0)
+        echo newPoints
+
+        result.add(@[start] & getPaths(window, allPoints, newPoints))
         
-        var newPaths = getPaths(window, allPoints, tempPoints, exclude)
-
-        echo newPaths
-
-        for path in newPaths:
-            echo "hi"
-            result.add(@[start] & path)
-            window.drawPath(result[result.high], allPoints)
+        window.drawPath(result[result.high], allPoints)
+        sleep(milliseconds(500))
 
     return result
 
@@ -104,19 +118,6 @@ window.verticalSyncEnabled = true
 var
     event: Event
     points = genPoints(6, 50)
-
-proc drawLinesIncr(window: RenderWindow, lines: seq[array[2, Point]], color: Color, start: int,
-        delayMs: int) =
-    for i in 0..lines.high:
-        window.clear(BACKGROUND_COLOR)
-
-        for j in 0..i:
-            window.drawLine(lines[j][0], lines[j][1], color)
-
-        window.drawPoints(points, color(255, 30, 50), 4.0, 10)
-        window.display()
-        sleep(milliseconds(delayMs.int32))
-
 
 while window.open:
     if window.pollEvent(event):
@@ -134,10 +135,10 @@ while window.open:
             else: discard
         else: discard
 
-    window.clear(BACKGROUND_COLOR)
-    window.drawPoints(points, color(255, 30, 50), 4.0, 10)
+    # window.clear(BACKGROUND_COLOR)
+    # window.drawPoints(points, color(255, 30, 50), 4.0, 10)
     discard getPaths(window, points, points)
 
-    window.display()
+    #window.display()
 
 window.destroy()
