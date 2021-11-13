@@ -72,7 +72,7 @@ proc drawPath(window: RenderWindow, path: seq[Point], allPoints: seq[Point]) =
         vertices.resize(i+1)
         vertices.append(vertex(vec2(p), color(255, 30, 50)))
         echo vertices
-        
+
         window.clear(BACKGROUND_COLOR)
         window.drawPoints(allPoints, color(255, 30, 50), 4.0, 10)
         window.draw(vertices)
@@ -101,7 +101,7 @@ proc getPaths(window: RenderWindow, allPoints: seq[Point], points: seq[Point]): 
         echo newPoints
 
         result.add(@[start] & getPaths(window, allPoints, newPoints))
-        
+
         window.drawPath(result[result.high], allPoints)
         sleep(milliseconds(500))
 
