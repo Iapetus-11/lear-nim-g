@@ -102,7 +102,7 @@ proc controls() = # a
 
     if mousebtn(2):
         let mousePos = vec2(mouse())
-        
+
         var dP: Point
 
         for i, p in points.pairs:
@@ -110,7 +110,7 @@ proc controls() = # a
                 dP = p
                 points.del(i)
                 break
-        
+
         if not dP.isNil:
             var cont = true
 
