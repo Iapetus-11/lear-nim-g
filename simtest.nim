@@ -70,7 +70,7 @@ proc gameDraw() =
     for p in points:
         circfill(p.pos.x, p.pos.y, 10)
 
-nico.timeStep = 1 / FPS  # set fps
+nico.timeStep = 1 / FPS # set fps
 
 nico.init("me.iapetus11", "simtest")
 nico.createWindow("Simulation Test", WINDOW_X, WINDOW_Y, SCALE, false)
