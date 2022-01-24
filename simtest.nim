@@ -71,7 +71,7 @@ proc controls() = # a
                 lastPoint = p
                 placePoint = false
                 break
-        
+
         if placePoint:
             points.add(Point(pos: mousePos, prevPos: mousePos, locked: false))
             lastPoint = points[points.high]
@@ -83,7 +83,7 @@ proc controls() = # a
             if contains(p.pos, 15, mousePos):
                 p.locked = not p.locked
                 break
-    
+
     if mousebtnup(0) and not lastPoint.isNil:
         let mousePos = vec2(mouse())
 
@@ -93,11 +93,11 @@ proc controls() = # a
             for p in points:
                 if contains(p.pos, 15, mousePos):
                     endP = p
-            
+
             if endP.isNil:
                 points.add(Point(pos: mousePos, prevPos: mousePos, locked: false))
                 endP = points[points.high]
-                
+
             sticks.add(Stick(a: lastPoint, b: endP, len: (lastPoint.pos - endP.pos).mag))
 
 
