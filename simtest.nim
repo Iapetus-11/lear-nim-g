@@ -19,7 +19,7 @@ const
     FPS = 60
 
     GRAVITY = 980.0
-    STICK_SIM_ITERS = 2
+    STICK_SIM_ITERS = 5
 
 var
     points: seq[Point]
@@ -100,6 +100,28 @@ proc controls() = # a
 
             sticks.add(Stick(a: lastPoint, b: endP, len: (lastPoint.pos - endP.pos).mag))
 
+    if mousebtn(2):
+        let mousePos = vec2(mouse())
+        
+        var dP: Point
+
+        for i, p in points.pairs:
+            if contains(p.pos, 15, mousePos):
+                dP = p
+                points.del(i)
+                break
+        
+        if not dP.isNil:
+            var cont = true
+
+            while cont:
+                cont = false
+
+                for i, s in sticks.pairs:
+                    if s.a == dP or s.b == dP:
+                        sticks.del(i)
+                        cont = true
+                        break
 
 proc gameUpdate(dt: float32) =
     if not paused:
@@ -127,5 +149,5 @@ proc gameDraw() =
 nico.timeStep = 1 / FPS # set fps
 
 nico.init("me.iapetus11", "simtest")
-nico.createWindow("Simulation Test", WINDOW_X, WINDOW_Y, SCALE, false)
+nico.createWindow("Simulation Test", WINDOW_X, WINDOW_Y, SCALE, true)
 nico.run(gameInit, gameUpdate, gameDraw)
