@@ -1,4 +1,4 @@
-import std/[math]
+import std/[math, hashes]
 import nico
 
 type
@@ -11,6 +11,9 @@ proc vec2*(x: Pfloat, y: PFloat): PVec2 =
 
 proc vec2*(p: tuple[x: int, y: int]): PVec2 =
     return PVec2(x: p.x.float, y: p.y.float)
+
+proc toTuple*(v: PVec2): tuple[x: Pfloat, y: Pfloat] =
+    return (v.x, v.y)
 
 proc `$`*(p: PVec2): string =
     return "(" & $p.x & "," & $p.y & ")"

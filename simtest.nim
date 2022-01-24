@@ -1,3 +1,5 @@
+import std/[tables]
+
 import nico
 
 import simtestvec
@@ -19,7 +21,12 @@ const
     FPS = 60
 
     GRAVITY = 980.0
-    STICK_SIM_ITERS = 5
+    STICK_SIM_ITERS = 2
+
+    GRID_DIST = 20
+
+proc newStick(a: Point, b: Point): Stick =
+    return Stick(a: a, b: b, len: (a.pos - b.pos).mag)
 
 var
     points: seq[Point]
@@ -58,6 +65,20 @@ proc simulate(dt: float32) =
             if not s.b.locked:
                 s.b.pos = sCenter - sDir * s.len / 2
 
+    # # cull objects outside window
+    # var
+    #     newPoints: seq[Point]
+    #     newSticks: seq[Stick]
+
+    # for s in sticks:
+    #     if s.a.pos.y < WINDOW_Y * 10 and s.b.pos.y < WINDOW_Y * 10:
+    #         newSticks.add(s)
+    #         newPoints.add(s.a)
+    #         newPoints.add(s.b)
+
+    # shallowCopy(points, newPoints)
+    # shallowCopy(sticks, newSticks)
+
 proc controls() = # a
     if keyp(K_SPACE):
         paused = not paused
@@ -76,7 +97,7 @@ proc controls() = # a
             points.add(Point(pos: mousePos, prevPos: mousePos, locked: false))
             lastPoint = points[points.high]
 
-    if mousebtnp(1):
+    if mousebtnp(1) or keyp(K_L):
         let mousePos = vec2(mouse())
 
         for p in points:
@@ -98,7 +119,7 @@ proc controls() = # a
                 points.add(Point(pos: mousePos, prevPos: mousePos, locked: false))
                 endP = points[points.high]
 
-            sticks.add(Stick(a: lastPoint, b: endP, len: (lastPoint.pos - endP.pos).mag))
+            sticks.add(newStick(lastPoint, endP))
 
     if mousebtn(2):
         let mousePos = vec2(mouse())
@@ -122,6 +143,27 @@ proc controls() = # a
                         sticks.del(i)
                         cont = true
                         break
+
+    if keyp(K_M):
+        gameInit()
+
+        var pMap: Table[tuple[x: Pfloat, y: Pfloat], Point]
+
+        for x in 40 .. WINDOW_X - 39:
+            for y in 40 .. WINDOW_Y - 39:
+                if x mod GRID_DIST == 0 and y mod GRID_DIST == 0:
+                    let p = Point(pos: vec2(x, y), prevPos: vec2(x, y), locked: false)
+                    points.add(p)
+                    pMap[p.pos.toTuple] = p
+
+        for p in points:
+            if pMap.hasKey((p.pos + vec2(-GRID_DIST, 0)).toTuple):
+                sticks.add(newStick(p, pMap[(p.pos + vec2(-GRID_DIST, 0)).toTuple]))
+
+            if pMap.hasKey((p.pos + vec2(0, GRID_DIST)).toTuple):
+                sticks.add(newStick(p, pMap[(p.pos + vec2(0, GRID_DIST)).toTuple]))
+
+        paused = true
 
 proc gameUpdate(dt: float32) =
     if not paused:
@@ -149,5 +191,5 @@ proc gameDraw() =
 nico.timeStep = 1 / FPS # set fps
 
 nico.init("me.iapetus11", "simtest")
-nico.createWindow("Simulation Test", WINDOW_X, WINDOW_Y, SCALE, true)
+nico.createWindow("Simulation Test", WINDOW_X, WINDOW_Y, SCALE, false)
 nico.run(gameInit, gameUpdate, gameDraw)
