@@ -59,3 +59,6 @@ proc norm*(v: PVec2): PVec2 =
     let m = v.mag
 
     return vec2(v.x / m, v.y / m)
+
+proc contains*(cP: PVec2, cR: Pfloat, v: Pvec2): bool =
+    return pow(v.x - cP.x, 2) + pow(v.y - cP.y, 2) < pow(cR, 2)
