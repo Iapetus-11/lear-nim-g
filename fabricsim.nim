@@ -94,7 +94,7 @@ proc controls() {.inline.} =
             if contains(p.pos, 4, mousePos):
                 p.locked = not p.locked
                 break
-    
+
     # draw line between two points
     if mousebtnup(0) and not lastPoint.isNil:
         let mousePos = vec2(mouse())
@@ -135,7 +135,7 @@ proc controls() {.inline.} =
                         sticks.del(i)
                         cont = true
                         break
-    
+
     # draw grid
     if keyp(K_M):
         gameInit()
