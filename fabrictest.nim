@@ -2,7 +2,7 @@ import std/[tables]
 
 import nico
 
-import simtestvec
+import vec
 
 type
     Point = ref object
@@ -14,16 +14,17 @@ type
         len: Pfloat
 
 const
-    WINDOW_X = 512
-    WINDOW_Y = 512
+    WINDOW_X = 768
+    WINDOW_Y = 480
     SCALE = 1
 
     FPS = 60
 
     GRAVITY = 980.0
-    STICK_SIM_ITERS = 2
 
-    GRID_DIST = 20
+    GRID_DIST = 10
+
+    SIM_REPEAT = 3
 
 proc newStick(a: Point, b: Point): Stick =
     return Stick(a: a, b: b, len: (a.pos - b.pos).mag)
@@ -53,7 +54,7 @@ proc simulate(dt: float32) =
             p.pos += vec2(0, (GRAVITY * dt * dt))
             p.prevPos = prevPos
 
-    for i in 0 .. STICK_SIM_ITERS - 1:
+    for i in 0 .. SIM_REPEAT - 1:
         for s in sticks:
             let
                 sCenter = (s.a.pos + s.b.pos) / 2
@@ -88,7 +89,7 @@ proc controls() = # a
         var placePoint = true
 
         for p in points:
-            if contains(p.pos, 15, mousePos):
+            if contains(p.pos, 4, mousePos):
                 lastPoint = p
                 placePoint = false
                 break
@@ -101,18 +102,18 @@ proc controls() = # a
         let mousePos = vec2(mouse())
 
         for p in points:
-            if contains(p.pos, 15, mousePos):
+            if contains(p.pos, 4, mousePos):
                 p.locked = not p.locked
                 break
 
     if mousebtnup(0) and not lastPoint.isNil:
         let mousePos = vec2(mouse())
 
-        if not contains(lastPoint.pos, 15, mousePos):
+        if not contains(lastPoint.pos, 4, mousePos):
             var endP: Point
 
             for p in points:
-                if contains(p.pos, 15, mousePos):
+                if contains(p.pos, 4, mousePos):
                     endP = p
 
             if endP.isNil:
@@ -127,7 +128,7 @@ proc controls() = # a
         var dP: Point
 
         for i, p in points.pairs:
-            if contains(p.pos, 15, mousePos):
+            if contains(p.pos, 10, mousePos):
                 dP = p
                 points.del(i)
                 break
@@ -180,13 +181,15 @@ proc gameDraw() =
         line(s.a.pos.x-1, s.a.pos.y-1, s.b.pos.x-1, s.b.pos.y-1)
         line(s.a.pos.x+1, s.a.pos.y+1, s.b.pos.x+1, s.b.pos.y+1)
 
+    setColor(12)
+
     for p in points:
         if p.locked:
             setColor(8)
-        else:
+            circfill(p.pos.x, p.pos.y, 3)
             setColor(12)
-
-        circfill(p.pos.x, p.pos.y, 5)
+        else:
+            circfill(p.pos.x, p.pos.y, 3)
 
 nico.timeStep = 1 / FPS # set fps
 
