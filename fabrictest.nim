@@ -14,8 +14,8 @@ type
         len: Pfloat
 
 const
-    WINDOW_X = 768
-    WINDOW_Y = 480
+    WINDOW_X = 946
+    WINDOW_Y = 512
     SCALE = 1
 
     FPS = 60
@@ -45,7 +45,7 @@ proc gameInit() =
 
     paused = false
 
-proc simulate(dt: float32) =
+proc simulate(dt: float32) {.inline.} =
     for p in points:
         if not p.locked:
             let prevPos = vec2(p.pos.x, p.pos.y)
@@ -66,21 +66,7 @@ proc simulate(dt: float32) =
             if not s.b.locked:
                 s.b.pos = sCenter - sDir * s.len / 2
 
-    # # cull objects outside window
-    # var
-    #     newPoints: seq[Point]
-    #     newSticks: seq[Stick]
-
-    # for s in sticks:
-    #     if s.a.pos.y < WINDOW_Y * 10 and s.b.pos.y < WINDOW_Y * 10:
-    #         newSticks.add(s)
-    #         newPoints.add(s.a)
-    #         newPoints.add(s.b)
-
-    # shallowCopy(points, newPoints)
-    # shallowCopy(sticks, newSticks)
-
-proc controls() = # a
+proc controls() {.inline.} =
     if keyp(K_SPACE):
         paused = not paused
 
