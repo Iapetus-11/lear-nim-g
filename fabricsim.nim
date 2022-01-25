@@ -22,7 +22,7 @@ const
 
     GRAVITY = 980.0
 
-    GRID_DIST = 10
+    GRID_DIST = 12
 
     SIM_REPEAT = 3
 
