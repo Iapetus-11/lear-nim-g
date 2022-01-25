@@ -20,7 +20,7 @@ const
 
     FPS = 60
 
-    GRAVITY = 980.0
+    GRAVITY = 440.0
 
     GRID_DIST = 12
 
