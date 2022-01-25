@@ -15,12 +15,12 @@ type
 
 const
     WINDOW_X = 946
-    WINDOW_Y = 512
+    WINDOW_Y = 640
     SCALE = 1
 
     FPS = 60
 
-    GRAVITY = 440.0
+    GRAVITY = 640.0
 
     GRID_DIST = 12
 
@@ -179,6 +179,6 @@ proc gameDraw() =
 
 nico.timeStep = 1 / FPS # set fps
 
-nico.init("me.iapetus11", "simtest")
-nico.createWindow("Simulation Test", WINDOW_X, WINDOW_Y, SCALE, false)
+nico.init("me.iapetus11", "fabricsim")
+nico.createWindow("Fabric Sim", WINDOW_X, WINDOW_Y, SCALE, false)
 nico.run(gameInit, gameUpdate, gameDraw)
