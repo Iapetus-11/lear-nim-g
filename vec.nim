@@ -68,3 +68,9 @@ proc norm*(v: PVec2): PVec2 {.inline.} =
 
 proc contains*(cP: PVec2, cR: Pfloat, v: Pvec2): bool {.inline.} =
     return pow(v.x - cP.x, 2) + pow(v.y - cP.y, 2) < pow(cR, 2)
+
+proc dist*(a: PVec2, b: Pvec2): Pfloat {.inline.} =
+    return sqrt(pow(b.x - a.x, 2) + pow(b.y - a.y, 2))
+
+# proc disti*(a: PVec2, b: Pvec2): Pfloat {.inline.} =
+#     return sqrt(pow(b.x.int - a.x.int, 2) + pow(b.y.int - a.y.int, 2))

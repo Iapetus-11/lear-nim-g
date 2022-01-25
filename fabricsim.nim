@@ -67,9 +67,11 @@ proc simulate(dt: float32) {.inline.} =
                 s.b.pos = sCenter - sDir * s.len / 2
 
 proc controls() {.inline.} =
-    if keyp(K_SPACE):
-        paused = not paused
+    if keyp(K_R): gameInit()
 
+    if keyp(K_SPACE): paused = not paused
+
+    # place new points
     if mousebtnp(0):
         let mousePos = vec2(mouse())
         var placePoint = true
@@ -84,6 +86,7 @@ proc controls() {.inline.} =
             points.add(Point(pos: mousePos, prevPos: mousePos, locked: false))
             lastPoint = points[points.high]
 
+    # toggle if point is locked
     if mousebtnp(1) or keyp(K_L):
         let mousePos = vec2(mouse())
 
@@ -91,7 +94,8 @@ proc controls() {.inline.} =
             if contains(p.pos, 4, mousePos):
                 p.locked = not p.locked
                 break
-
+    
+    # draw line between two points
     if mousebtnup(0) and not lastPoint.isNil:
         let mousePos = vec2(mouse())
 
@@ -108,6 +112,7 @@ proc controls() {.inline.} =
 
             sticks.add(newStick(lastPoint, endP))
 
+    # destroy points / lines
     if mousebtn(2):
         let mousePos = vec2(mouse())
 
@@ -130,7 +135,8 @@ proc controls() {.inline.} =
                         sticks.del(i)
                         cont = true
                         break
-
+    
+    # draw grid
     if keyp(K_M):
         gameInit()
 
