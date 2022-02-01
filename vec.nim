@@ -2,7 +2,7 @@ import std/[math]
 import nico
 
 type
-    PVec2* = ref object
+    PVec2* = object
         x*: PFloat
         y*: PFloat
 
@@ -21,34 +21,18 @@ proc `$`*(v: PVec2): string =
 proc `+`*(a: PVec2, b: PVec2): PVec2 {.inline.} =
     return vec2(a.x + b.x, a.y + b.y)
 
-proc `+=`*(a: PVec2, b: PVec2) {.inline.} =
-    a.x += b.x
-    a.y += b.y
-
 proc `-`*(a: PVec2, b: PVec2): PVec2 {.inline.} =
     return vec2(a.x - b.x, a.y - b.y)
-
-proc `-=`*(a: PVec2, b: PVec2) {.inline.} =
-    a.x -= b.x
-    a.y -= b.y
 
 proc `*`*(a: PVec2, b: Pfloat): Pvec2 {.inline.} =
     result = PVec2()
     result.x = a.x * b
     result.y = a.y * b
 
-proc `*=`*(a: PVec2, b: Pfloat) {.inline.} =
-    a.x = a.x * b
-    a.y = a.y * b
-
 proc `/`*(a: PVec2, b: Pfloat): PVec2 {.inline.} =
     result = PVec2()
     result.x = a.x / b
     result.y = a.y / b
-
-proc `/=`*(a: PVec2, b: Pfloat) {.inline.} =
-    a.x = a.x / b
-    a.y = a.y / b
 
 proc rot*(v: PVec2, deg: Pfloat): PVec2 {.inline.} =
     let

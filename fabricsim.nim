@@ -50,8 +50,8 @@ proc simulate(dt: float32) {.inline.} =
         if not p.locked:
             let prevPos = vec2(p.pos.x, p.pos.y)
 
-            p.pos += p.pos - p.prevPos
-            p.pos += vec2(0, (GRAVITY * dt * dt))
+            p.pos = p.pos + (p.pos - p.prevPos)
+            p.pos = p.pos + vec2(0, (GRAVITY * dt * dt))
             p.prevPos = prevPos
 
     for i in 0 .. SIM_REPEAT - 1:
